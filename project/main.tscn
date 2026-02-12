@@ -2,5 +2,8 @@
 
 [ext_resource type="Script" uid="uid://cw1l7518f3r1a" path="res://main.gd" id="1_ig7tw"]
 
-[node name="Main" type="Node" unique_id=1990423175]
+[node name="Main" type="Node" unique_id=1990423175 node_paths=PackedStringArray("state_container")]
 script = ExtResource("1_ig7tw")
+state_container = NodePath("State")
+
+[node name="State" type="Node" parent="." unique_id=713003963]

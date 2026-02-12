@@ -21,6 +21,10 @@ run/low_processor_mode=true
 boot_splash/show_image=false
 config/icon="res://icon.svg"
 
+[autoload]
+
+Global="*uid://cv1haq774vk4o"
+
 [display]
 
 window/size/viewport_width=1920
@@ -31,6 +35,10 @@ window/size/viewport_height=1080
 folder_colors={
 "res://editor/": "red"
 }
+
+[gui]
+
+theme/default_theme_scale=2.0
 
 [rendering]
 
