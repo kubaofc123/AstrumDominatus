@@ -1,0 +1,28 @@
+# Godot 4+ specific ignores
+.godot/
+
+# Build
+build/
+
+# Engine
+engine/local_data/
+engine/editor_data/cache
+engine/cache/*
+engine/editor_data/shader_cache/
+engine/editor_data/editor_settings-*
+engine/*.exe
+engine/editor_themes/
+
+# Export templates
+export_templates/*.exe
+export_templates/*.x86_64
+
+# Project
+~*
+engine/editor_data/recent_dirs
+Saves/
+
+# Any . folders
+.*/
+!.vscode
+.vscode/settings.json
