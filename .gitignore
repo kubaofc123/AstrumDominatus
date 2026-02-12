@@ -22,6 +22,7 @@ export_templates/*.x86_64
 
 # Project
 ~*
+project/metadata/
 
 # Any . folders
 .*/
