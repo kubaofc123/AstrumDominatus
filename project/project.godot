@@ -26,6 +26,12 @@ config/icon="res://icon.svg"
 window/size/viewport_width=1920
 window/size/viewport_height=1080
 
+[file_customization]
+
+folder_colors={
+"res://editor/": "red"
+}
+
 [rendering]
 
 rendering_device/driver.windows="d3d12"
