@@ -6,6 +6,7 @@
 
 [node name="Main" type="Node" unique_id=1990423175 node_paths=PackedStringArray("state_container")]
 script = ExtResource("1_ig7tw")
+required_mods_list = PackedStringArray("mod_3494196322")
 state_container = NodePath("State")
 
 [node name="State" type="Node" parent="." unique_id=713003963]
