@@ -1,3 +1,8 @@
+<img src="./project/art/t_text_1.png">
+
+<br />
+<br />
+
 # Setup
 
 1. Download Godot 4.6 Standard from `https://godotengine.org/download/archive/4.6-stable/` and extract content to `engine` folder.
