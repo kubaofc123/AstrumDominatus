@@ -3,6 +3,8 @@
 [ext_resource type="Script" uid="uid://b5reclqd0b1rx" path="res://states/state_main.gd" id="1_xn747"]
 [ext_resource type="Texture2D" uid="uid://4hegly4se52r" path="res://art/ai/grok/t_bg_1.jpg" id="2_f1klq"]
 [ext_resource type="FontFile" uid="uid://d26tkhlr5xmq" path="res://fonts/courier_prime_sans/Courier Prime Sans.ttf" id="3_n1erg"]
+[ext_resource type="FontFile" uid="uid://s5cki55srkr5" path="res://fonts/courier_prime_sans/Courier Prime Sans Bold.ttf" id="4_pgn8p"]
+[ext_resource type="PackedScene" uid="uid://cysnga8wcpxre" path="res://ui/w_mission_popup.tscn" id="4_uoll7"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_pgn8p"]
 bg_color = Color(0.14, 0.14, 0.14, 0)
@@ -26,144 +28,257 @@ corner_radius_top_right = 1
 corner_radius_bottom_right = 1
 corner_radius_bottom_left = 1
 
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_0cxli"]
+bg_color = Color(0.5775381, 1.8247963, 0.5775381, 0)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.5775381, 1.8247963, 0.5775381, 1)
+corner_radius_top_left = 2
+corner_radius_top_right = 2
+corner_radius_bottom_right = 2
+corner_radius_bottom_left = 2
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_f8jj2"]
+bg_color = Color(0.5775381, 1.8247963, 0.5775381, 1)
+corner_radius_top_left = 2
+corner_radius_top_right = 2
+corner_radius_bottom_right = 2
+corner_radius_bottom_left = 2
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_pgn8p"]
+
+[sub_resource type="GDScript" id="GDScript_pgn8p"]
+script/source = "extends Label
+
+
+#=============================== VARIABLES ===============================
+
+#================ PUBLIC ================
+
+#================ PRIVATE ================
+
+@export var _color_normal : Color
+@export var _color_hover : Color
+
+#=============================== FUNCTIONS ===============================
+
+#================ PUBLIC ================
+
+#================ PRIVATE ================
+
+#=============================== CALLBACKS ===============================
+
+func _on_button_load_save_file_mouse_entered() -> void:
+	add_theme_color_override(&\"font_color\", _color_hover)
+	
+func _on_button_load_save_file_mouse_exited() -> void:
+	add_theme_color_override(&\"font_color\", _color_normal)
+	
+########################## END OF FILE ##########################
+"
+
 [sub_resource type="Animation" id="Animation_uoll7"]
 length = 0.001
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
-tracks/0/path = NodePath("UI/HBoxContainer/Control/VBoxContainer/Label:visible_characters")
+tracks/0/path = NodePath("UI/HBoxContainer/Control/VBoxContainer2/Label_PlanetName:visible_ratio")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
-"update": 1,
-"values": [-1]
+"update": 0,
+"values": [0.0]
 }
 tracks/1/type = "value"
 tracks/1/imported = false
 tracks/1/enabled = true
-tracks/1/path = NodePath("UI/HBoxContainer/Control/VBoxContainer/Label:visible_ratio")
+tracks/1/path = NodePath("UI/HBoxContainer/Control/VBoxContainer2/HBoxContainer2/Label_PlanetStatus:visible_ratio")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 0,
-"values": [1.0]
+"values": [0.0]
 }
 tracks/2/type = "value"
 tracks/2/imported = false
 tracks/2/enabled = true
-tracks/2/path = NodePath("UI/HBoxContainer/Control/VBoxContainer/Label2:visible_ratio")
+tracks/2/path = NodePath("UI/HBoxContainer/Control/VBoxContainer2/Label_FactionControlPercent:visible_ratio")
 tracks/2/interp = 1
 tracks/2/loop_wrap = true
 tracks/2/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 0,
-"values": [1.0]
+"values": [0.0]
 }
 tracks/3/type = "value"
 tracks/3/imported = false
 tracks/3/enabled = true
-tracks/3/path = NodePath("UI/HBoxContainer/Control/VBoxContainer/HBoxContainer/Label3:visible_ratio")
+tracks/3/path = NodePath("UI/HBoxContainer/Control/VBoxContainer/HBoxContainer2/Label5:visible_ratio")
 tracks/3/interp = 1
 tracks/3/loop_wrap = true
 tracks/3/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 0,
-"values": [1.0]
+"values": [0.0]
 }
 tracks/4/type = "value"
 tracks/4/imported = false
 tracks/4/enabled = true
-tracks/4/path = NodePath("UI/HBoxContainer/Control/VBoxContainer/HBoxContainer/Label4:visible_ratio")
+tracks/4/path = NodePath("UI/HBoxContainer/Control/VBoxContainer/HBoxContainer2/Label4:visible_ratio")
 tracks/4/interp = 1
 tracks/4/loop_wrap = true
 tracks/4/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 0,
-"values": [1.0]
+"values": [0.0]
+}
+tracks/5/type = "value"
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/path = NodePath("UI/HBoxContainer/Control/VBoxContainer2/HBoxContainer2/Label_PlanetStatusValue:visible_ratio")
+tracks/5/interp = 1
+tracks/5/loop_wrap = true
+tracks/5/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [0.0]
+}
+tracks/6/type = "value"
+tracks/6/imported = false
+tracks/6/enabled = true
+tracks/6/path = NodePath("UI/HBoxContainer/Control/VBoxContainer2/Label_ConnectionEstablished:visible_ratio")
+tracks/6/interp = 1
+tracks/6/loop_wrap = true
+tracks/6/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [0.0]
 }
 
-[sub_resource type="Animation" id="Animation_n1erg"]
-resource_name = "a_intro"
-length = 8.0
+[sub_resource type="Animation" id="Animation_pgn8p"]
+resource_name = "a_save_file"
 step = 0.5
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
-tracks/0/path = NodePath("UI/HBoxContainer/Control/VBoxContainer/Label:visible_characters")
+tracks/0/path = NodePath("UI/HBoxContainer/Control/VBoxContainer/HBoxContainer2/Label5:visible_ratio")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
-"times": PackedFloat32Array(1, 1.5, 2),
-"transitions": PackedFloat32Array(1, 1, 1),
-"update": 0,
-"values": [0, 9, 9]
-}
-tracks/1/type = "value"
-tracks/1/imported = false
-tracks/1/enabled = true
-tracks/1/path = NodePath("UI/HBoxContainer/Control/VBoxContainer/Label:visible_ratio")
-tracks/1/interp = 1
-tracks/1/loop_wrap = true
-tracks/1/keys = {
-"times": PackedFloat32Array(1, 1.5, 2, 2.5),
-"transitions": PackedFloat32Array(1, 1, 1, 1),
-"update": 0,
-"values": [0.0, 0.5625, 0.563, 1.0]
-}
-tracks/2/type = "value"
-tracks/2/imported = false
-tracks/2/enabled = true
-tracks/2/path = NodePath("UI/HBoxContainer/Control/VBoxContainer/Label2:visible_ratio")
-tracks/2/interp = 1
-tracks/2/loop_wrap = true
-tracks/2/keys = {
-"times": PackedFloat32Array(0, 3, 3.5, 4, 5),
-"transitions": PackedFloat32Array(1, 1, 1, 1, 1),
-"update": 0,
-"values": [0.0, 0.0, 0.36587715, 0.366, 1.0]
-}
-tracks/3/type = "value"
-tracks/3/imported = false
-tracks/3/enabled = true
-tracks/3/path = NodePath("UI/HBoxContainer/Control/VBoxContainer/HBoxContainer/Label3:visible_ratio")
-tracks/3/interp = 1
-tracks/3/loop_wrap = true
-tracks/3/keys = {
-"times": PackedFloat32Array(0, 5.5, 6.5),
-"transitions": PackedFloat32Array(1, 1, 1),
-"update": 0,
-"values": [0.0, 0.0, 1.0]
-}
-tracks/4/type = "value"
-tracks/4/imported = false
-tracks/4/enabled = true
-tracks/4/path = NodePath("UI/HBoxContainer/Control/VBoxContainer/HBoxContainer/Label4:visible_ratio")
-tracks/4/interp = 1
-tracks/4/loop_wrap = true
-tracks/4/keys = {
-"times": PackedFloat32Array(7, 7.5),
+"times": PackedFloat32Array(0, 0.5),
 "transitions": PackedFloat32Array(1, 1),
 "update": 0,
 "values": [0.0, 1.0]
 }
 
+[sub_resource type="Animation" id="Animation_0cxli"]
+resource_name = "a_save_file_status"
+step = 0.5
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("UI/HBoxContainer/Control/VBoxContainer/HBoxContainer2/Label4:visible_ratio")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.5),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [0.0, 1.0]
+}
+
+[sub_resource type="Animation" id="Animation_n1erg"]
+resource_name = "a_intro"
+length = 6.5
+step = 0.25
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("UI/HBoxContainer/Control/VBoxContainer2/Label_FactionControlPercent:visible_ratio")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(2.75, 3.5),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [0.0, 1.0]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("UI/HBoxContainer/Control/VBoxContainer2/HBoxContainer2/Label_PlanetStatus:visible_ratio")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 4, 4.25),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [0.0, 0.0, 1.0]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("UI/HBoxContainer/Control/VBoxContainer2/HBoxContainer2/Label_PlanetStatusValue:visible_ratio")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(5.5, 6),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [0.0, 1.0]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("UI/HBoxContainer/Control/VBoxContainer2/Label_ConnectionEstablished:visible_ratio")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0, 0.5),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [0.0, 1.0]
+}
+tracks/4/type = "value"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath("UI/HBoxContainer/Control/VBoxContainer2/Label_PlanetName:visible_ratio")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"times": PackedFloat32Array(0, 1, 1.31, 2, 2.25),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1),
+"update": 0,
+"values": [0.0, 0.0, 0.6199999, 0.62, 1.0]
+}
+
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_uoll7"]
 _data = {
 &"RESET": SubResource("Animation_uoll7"),
-&"a_intro": SubResource("Animation_n1erg")
+&"a_save_file": SubResource("Animation_pgn8p"),
+&"a_save_file_status": SubResource("Animation_0cxli"),
+&"a_status": SubResource("Animation_n1erg")
 }
 
-[node name="StateMain" type="Node" unique_id=554935585 node_paths=PackedStringArray("mission_popup_container")]
+[node name="StateMain" type="Node" unique_id=554935585 node_paths=PackedStringArray("mission_popup_container", "anim_player_save", "anim_player_status", "file_dialog", "button_load_save_file")]
 script = ExtResource("1_xn747")
 mission_popup_container = NodePath("UI/HBoxContainer/Control3/ScrollContainer/MissionPopupContainer")
 mission_popup_widget_class_uid = &"uid://cysnga8wcpxre"
+anim_player_save = NodePath("AnimationPlayer_Save")
+anim_player_status = NodePath("AnimationPlayer_Status")
+file_dialog = NodePath("FileDialog")
+button_load_save_file = NodePath("UI/HBoxContainer/Control/VBoxContainer/Button_LoadSaveFile")
 
 [node name="UI" type="Control" parent="." unique_id=990655885]
 layout_mode = 3
@@ -173,6 +288,7 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
+metadata/_edit_lock_ = true
 
 [node name="ColorBG" type="ColorRect" parent="UI" unique_id=765304803]
 layout_mode = 1
@@ -182,6 +298,7 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 color = Color(0, 0, 0, 1)
+metadata/_edit_lock_ = true
 
 [node name="TextureRect_Planet" type="TextureRect" parent="UI" unique_id=448276384]
 layout_mode = 1
@@ -193,6 +310,7 @@ grow_vertical = 2
 texture = ExtResource("2_f1klq")
 expand_mode = 1
 stretch_mode = 6
+metadata/_edit_lock_ = true
 
 [node name="PlanetaryProgressBar" type="Control" parent="UI" unique_id=994139749]
 layout_mode = 1
@@ -228,24 +346,26 @@ grow_horizontal = 2
 grow_vertical = 2
 theme_override_styles/background = SubResource("StyleBoxFlat_uoll7")
 theme_override_styles/fill = SubResource("StyleBoxFlat_n1erg")
-value = 12.0
+value = 70.0
 show_percentage = false
 
 [node name="HBoxContainer" type="HBoxContainer" parent="UI" unique_id=828618662]
 layout_mode = 1
-anchors_preset = 15
+anchors_preset = -1
 anchor_right = 1.0
 anchor_bottom = 1.0
 offset_left = 50.0
 offset_top = 50.0
-offset_right = 18.0
-offset_bottom = 10.0
+offset_right = -50.0
+offset_bottom = -50.0
 grow_horizontal = 2
 grow_vertical = 2
+metadata/_edit_lock_ = true
 
 [node name="Control" type="Control" parent="UI/HBoxContainer" unique_id=1405995465]
 layout_mode = 2
 size_flags_horizontal = 3
+mouse_filter = 2
 
 [node name="VBoxContainer" type="VBoxContainer" parent="UI/HBoxContainer/Control" unique_id=1462160752]
 layout_mode = 1
@@ -254,47 +374,143 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+mouse_filter = 2
 
-[node name="Label" type="Label" parent="UI/HBoxContainer/Control/VBoxContainer" unique_id=1821289480]
+[node name="HBoxContainer2" type="HBoxContainer" parent="UI/HBoxContainer/Control/VBoxContainer" unique_id=414477094]
+layout_mode = 2
+mouse_filter = 2
+theme_override_constants/separation = 0
+
+[node name="Label5" type="Label" parent="UI/HBoxContainer/Control/VBoxContainer/HBoxContainer2" unique_id=144058353]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.5775381, 1.8247963, 0.5775381, 1)
+theme_override_fonts/font = ExtResource("3_n1erg")
+text = "Save file : "
+uppercase = true
+visible_characters = 0
+visible_ratio = 0.0
+
+[node name="Label4" type="Label" parent="UI/HBoxContainer/Control/VBoxContainer/HBoxContainer2" unique_id=1473291135]
+layout_mode = 2
+theme_override_colors/font_color = Color(1.8247963, 0.5775381, 0.5775381, 1)
+theme_override_fonts/font = ExtResource("3_n1erg")
+text = "Not Loaded"
+uppercase = true
+visible_characters = 0
+visible_ratio = 0.0
+
+[node name="Button_LoadSaveFile" type="Button" parent="UI/HBoxContainer/Control/VBoxContainer" unique_id=781176072]
+custom_minimum_size = Vector2(147.54, 26.72)
+layout_mode = 2
+size_flags_horizontal = 0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_fonts/font = ExtResource("4_pgn8p")
+theme_override_styles/normal = SubResource("StyleBoxFlat_0cxli")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_f8jj2")
+theme_override_styles/hover = SubResource("StyleBoxFlat_f8jj2")
+theme_override_styles/focus = SubResource("StyleBoxEmpty_pgn8p")
+action_mode = 0
+
+[node name="Label" type="Label" parent="UI/HBoxContainer/Control/VBoxContainer/Button_LoadSaveFile" unique_id=120783504]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = 2.04
+offset_bottom = 2.0400028
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_color = Color(0.5775381, 1.8247963, 0.5775381, 1)
+theme_override_fonts/font = ExtResource("4_pgn8p")
+text = "LOAD SAVE FILE"
+horizontal_alignment = 1
+vertical_alignment = 1
+uppercase = true
+script = SubResource("GDScript_pgn8p")
+_color_normal = Color(0.5775381, 1.8247963, 0.5775381, 1)
+
+[node name="VBoxContainer2" type="VBoxContainer" parent="UI/HBoxContainer/Control" unique_id=1194685828]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+alignment = 2
+metadata/_edit_lock_ = true
+
+[node name="Label_ConnectionEstablished" type="Label" parent="UI/HBoxContainer/Control/VBoxContainer2" unique_id=1824372220]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.5775381, 1.8247963, 0.5775381, 1)
+theme_override_fonts/font = ExtResource("3_n1erg")
+text = "Connection established"
+uppercase = true
+visible_characters = 0
+visible_ratio = 0.0
+
+[node name="Label_Empty3" type="Label" parent="UI/HBoxContainer/Control/VBoxContainer2" unique_id=1737359786]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.5775381, 1.8247963, 0.5775381, 1)
+theme_override_fonts/font = ExtResource("3_n1erg")
+uppercase = true
+
+[node name="Label_PlanetName" type="Label" parent="UI/HBoxContainer/Control/VBoxContainer2" unique_id=1821289480]
 layout_mode = 2
 theme_override_colors/font_color = Color(0.5775381, 1.8247963, 0.5775381, 1)
 theme_override_fonts/font = ExtResource("3_n1erg")
 text = "Planet : Ercaris"
 uppercase = true
+visible_characters = 0
+visible_ratio = 0.0
 
-[node name="Label2" type="Label" parent="UI/HBoxContainer/Control/VBoxContainer" unique_id=255467107]
+[node name="Label_FactionControlPercent" type="Label" parent="UI/HBoxContainer/Control/VBoxContainer2" unique_id=1903236650]
 layout_mode = 2
 theme_override_colors/font_color = Color(0.5775381, 1.8247963, 0.5775381, 1)
 theme_override_fonts/font = ExtResource("3_n1erg")
-text = "Status : chaos invasion"
+text = "Imperial Control at 70%"
+uppercase = true
+visible_characters = 0
+visible_ratio = 0.0
+
+[node name="Label_Empty2" type="Label" parent="UI/HBoxContainer/Control/VBoxContainer2" unique_id=2000752016]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.5775381, 1.8247963, 0.5775381, 1)
+theme_override_fonts/font = ExtResource("3_n1erg")
 uppercase = true
 
-[node name="HBoxContainer" type="HBoxContainer" parent="UI/HBoxContainer/Control/VBoxContainer" unique_id=234560054]
+[node name="HBoxContainer2" type="HBoxContainer" parent="UI/HBoxContainer/Control/VBoxContainer2" unique_id=847644668]
 layout_mode = 2
 theme_override_constants/separation = 0
 
-[node name="Label3" type="Label" parent="UI/HBoxContainer/Control/VBoxContainer/HBoxContainer" unique_id=1903236650]
+[node name="Label_PlanetStatus" type="Label" parent="UI/HBoxContainer/Control/VBoxContainer2/HBoxContainer2" unique_id=255467107]
 layout_mode = 2
 theme_override_colors/font_color = Color(0.5775381, 1.8247963, 0.5775381, 1)
 theme_override_fonts/font = ExtResource("3_n1erg")
-text = "Imperial Control : "
+text = "Status : "
 uppercase = true
+visible_characters = 0
+visible_ratio = 0.0
 
-[node name="Label4" type="Label" parent="UI/HBoxContainer/Control/VBoxContainer/HBoxContainer" unique_id=826844400]
+[node name="Label_PlanetStatusValue" type="Label" parent="UI/HBoxContainer/Control/VBoxContainer2/HBoxContainer2" unique_id=1702142717]
 layout_mode = 2
-theme_override_colors/font_color = Color(0.5775381, 1.8247963, 0.5775381, 1)
+theme_override_colors/font_color = Color(1.8247963, 0.5775381, 0.5775381, 1)
 theme_override_fonts/font = ExtResource("3_n1erg")
-text = "70%"
+text = "Chaos invasion"
 uppercase = true
+visible_characters = 0
+visible_ratio = 0.0
 
 [node name="Control2" type="Control" parent="UI/HBoxContainer" unique_id=1034915084]
 layout_mode = 2
 size_flags_horizontal = 3
+metadata/_edit_lock_ = true
 
 [node name="Control3" type="Control" parent="UI/HBoxContainer" unique_id=711941719]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_stretch_ratio = 0.5
+metadata/_edit_lock_ = true
 
 [node name="ScrollContainer" type="ScrollContainer" parent="UI/HBoxContainer/Control3" unique_id=1465620271]
 custom_minimum_size = Vector2(300, 0)
@@ -312,6 +528,27 @@ size_flags_horizontal = 3
 size_flags_vertical = 3
 theme_override_constants/separation = 8
 
-[node name="AnimationPlayer" type="AnimationPlayer" parent="." unique_id=721368326]
+[node name="MissionPopup" parent="UI/HBoxContainer/Control3/ScrollContainer/MissionPopupContainer" unique_id=1105889443 instance=ExtResource("4_uoll7")]
+layout_mode = 2
+
+[node name="AnimationPlayer_Save" type="AnimationPlayer" parent="." unique_id=721368326]
 libraries/ = SubResource("AnimationLibrary_uoll7")
-autoplay = &"a_intro"
+autoplay = &"a_save_file"
+
+[node name="AnimationPlayer_Status" type="AnimationPlayer" parent="." unique_id=647901276]
+libraries/ = SubResource("AnimationLibrary_uoll7")
+autoplay = &"a_status"
+
+[node name="FileDialog" type="FileDialog" parent="." unique_id=273474148]
+oversampling_override = 1.0
+title = "Open a File"
+initial_position = 1
+ok_button_text = "Select"
+file_mode = 0
+access = 2
+filters = PackedStringArray("*.sav")
+use_native_dialog = true
+folder_creation_enabled = false
+
+[connection signal="mouse_entered" from="UI/HBoxContainer/Control/VBoxContainer/Button_LoadSaveFile" to="UI/HBoxContainer/Control/VBoxContainer/Button_LoadSaveFile/Label" method="_on_button_load_save_file_mouse_entered"]
+[connection signal="mouse_exited" from="UI/HBoxContainer/Control/VBoxContainer/Button_LoadSaveFile" to="UI/HBoxContainer/Control/VBoxContainer/Button_LoadSaveFile/Label" method="_on_button_load_save_file_mouse_exited"]

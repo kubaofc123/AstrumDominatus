@@ -5,9 +5,11 @@ extends Node
 
 #================ PUBLIC ================
 
+@export_group("Setup")
+@export var mod_blacklist : PackedStringArray		## List of mods that if they appear in save file, app will not load the save
 @export_group("Setup/Backend")
-@export var backend_address : String
-@export var backend_key : String
+@export var backend_address : String				## Address of the backend where the results are being sent and status is received
+@export var backend_read_key : String			## Backend API key to receive status
 @export_group("Setup/Nodes")
 @export var state_container : Node = null
 
