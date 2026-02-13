@@ -18,17 +18,26 @@ config/disable_project_settings_override=true
 config/features=PackedStringArray("4.6", "GL Compatibility")
 run/max_fps=60
 run/low_processor_mode=true
+boot_splash/bg_color=Color(0, 0, 0, 1)
 boot_splash/show_image=false
-config/icon="res://icon.svg"
+config/icon="uid://deqliqacgaa5g"
+config/windows_native_icon="res://t_icon.ico"
 
 [autoload]
 
 Global="*uid://cv1haq774vk4o"
 
+[debug]
+
+gdscript/warnings/unused_parameter=0
+
 [display]
 
 window/size/viewport_width=1920
 window/size/viewport_height=1080
+window/size/resizable=false
+window/stretch/mode="canvas_items"
+window/stretch/aspect="expand"
 
 [file_customization]
 
@@ -36,13 +45,9 @@ folder_colors={
 "res://editor/": "red"
 }
 
-[gui]
-
-theme/default_theme_scale=2.0
-
 [rendering]
 
 rendering_device/driver.windows="d3d12"
-renderer/rendering_method="gl_compatibility"
-renderer/rendering_method.mobile="gl_compatibility"
+renderer/rendering_method="mobile"
 viewport/hdr_2d=true
+anti_aliasing/quality/msaa_2d=2

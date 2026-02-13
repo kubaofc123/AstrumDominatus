@@ -1,9 +1,13 @@
 [gd_scene format=3 uid="uid://ly7rnmtm8w4n"]
 
 [ext_resource type="Script" uid="uid://cw1l7518f3r1a" path="res://main.gd" id="1_ig7tw"]
+[ext_resource type="Environment" uid="uid://bls0cff4g64t5" path="res://environments/env_default.tres" id="2_0xm2m"]
 
 [node name="Main" type="Node" unique_id=1990423175 node_paths=PackedStringArray("state_container")]
 script = ExtResource("1_ig7tw")
 state_container = NodePath("State")
 
 [node name="State" type="Node" parent="." unique_id=713003963]
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=1016410660]
+environment = ExtResource("2_0xm2m")

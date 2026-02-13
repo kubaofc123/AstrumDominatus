@@ -31,10 +31,14 @@ func load_state(p_state : Main.EState) -> void:
 			state_container.add_child(__new_state)
 		
 		Main.EState.LOGIN:
-			pass
+			var __scene : PackedScene = EngineScriptLibrary.utility.load_asset("uid://c5uk4kwk32em6")
+			var __new_state : StateLogin = __scene.instantiate()
+			state_container.add_child(__new_state)
 		
 		Main.EState.MAIN:
-			pass
+			var __scene : PackedScene = EngineScriptLibrary.utility.load_asset("uid://cmiuvqw00m57i")
+			var __new_state : StateMain = __scene.instantiate()
+			state_container.add_child(__new_state)
 		
 		_:
 			pass

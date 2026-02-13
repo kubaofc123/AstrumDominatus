@@ -1,6 +1,61 @@
 [gd_scene format=3 uid="uid://c5uk4kwk32em6"]
 
 [ext_resource type="Script" uid="uid://rhjwqwcwcpco" path="res://states/state_login.gd" id="1_ojvq5"]
+[ext_resource type="Texture2D" uid="uid://4hegly4se52r" path="res://art/ai/grok/t_bg_1.jpg" id="2_r8awg"]
 
 [node name="StateLogin" type="Node" unique_id=568349491]
 script = ExtResource("1_ojvq5")
+
+[node name="ColorBG" type="ColorRect" parent="." unique_id=923192428]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 1)
+
+[node name="Control" type="Control" parent="." unique_id=1866889068]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="TextureRect_Planet" type="TextureRect" parent="Control" unique_id=1215195436]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("2_r8awg")
+expand_mode = 1
+stretch_mode = 6
+
+[node name="Panel" type="Panel" parent="." unique_id=1944037059]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -193.0
+offset_top = -265.0
+offset_right = 193.0
+offset_bottom = 265.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Button" type="Button" parent="Panel" unique_id=603853937]
+layout_mode = 1
+anchors_preset = 14
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+offset_top = -81.0
+offset_bottom = 81.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "LOGIN"
+
+[connection signal="pressed" from="Panel/Button" to="." method="_on_button_pressed"]

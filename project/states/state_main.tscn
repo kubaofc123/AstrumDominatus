@@ -1,6 +1,214 @@
 [gd_scene format=3 uid="uid://cmiuvqw00m57i"]
 
 [ext_resource type="Script" uid="uid://b5reclqd0b1rx" path="res://states/state_main.gd" id="1_xn747"]
+[ext_resource type="Texture2D" uid="uid://4hegly4se52r" path="res://art/ai/grok/t_bg_1.jpg" id="2_f1klq"]
+[ext_resource type="FontFile" uid="uid://d26tkhlr5xmq" path="res://fonts/courier_prime_sans/Courier Prime Sans.ttf" id="3_n1erg"]
+
+[sub_resource type="Animation" id="Animation_uoll7"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("VBoxContainer/Label:visible_characters")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [-1]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("VBoxContainer/Label:visible_ratio")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [1.0]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("VBoxContainer/Label2:visible_ratio")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [1.0]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("VBoxContainer/HBoxContainer/Label3:visible_ratio")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [1.0]
+}
+tracks/4/type = "value"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath("VBoxContainer/HBoxContainer/Label4:visible_ratio")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [1.0]
+}
+
+[sub_resource type="Animation" id="Animation_n1erg"]
+resource_name = "a_intro"
+length = 8.0
+step = 0.5
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("VBoxContainer/Label:visible_characters")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(1, 1.5, 2),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [0, 9, 9]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("VBoxContainer/Label:visible_ratio")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(1, 1.5, 2, 2.5),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 0,
+"values": [0.0, 0.5625, 0.563, 1.0]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("VBoxContainer/Label2:visible_ratio")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0, 3, 3.5, 4, 5),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1),
+"update": 0,
+"values": [0.0, 0.0, 0.36587715, 0.366, 1.0]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("VBoxContainer/HBoxContainer/Label3:visible_ratio")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0, 5.5, 6.5),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [0.0, 0.0, 1.0]
+}
+tracks/4/type = "value"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath("VBoxContainer/HBoxContainer/Label4:visible_ratio")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"times": PackedFloat32Array(7, 7.5),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [0.0, 1.0]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_uoll7"]
+_data = {
+&"RESET": SubResource("Animation_uoll7"),
+&"a_intro": SubResource("Animation_n1erg")
+}
 
 [node name="StateMain" type="Node" unique_id=554935585]
 script = ExtResource("1_xn747")
+
+[node name="ColorBG" type="ColorRect" parent="." unique_id=765304803]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 1)
+
+[node name="Control" type="Control" parent="." unique_id=1910427200]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="TextureRect_Planet" type="TextureRect" parent="Control" unique_id=448276384]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("2_f1klq")
+expand_mode = 1
+stretch_mode = 6
+
+[node name="VBoxContainer" type="VBoxContainer" parent="." unique_id=1462160752]
+anchors_preset = 9
+anchor_bottom = 1.0
+offset_left = 34.0
+offset_top = 52.0
+offset_right = 373.0
+offset_bottom = -52.0
+grow_vertical = 2
+
+[node name="Label" type="Label" parent="VBoxContainer" unique_id=1821289480]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.5775381, 1.8247963, 0.5775381, 1)
+theme_override_fonts/font = ExtResource("3_n1erg")
+text = "Planet : Ercaris"
+uppercase = true
+
+[node name="Label2" type="Label" parent="VBoxContainer" unique_id=255467107]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.5775381, 1.8247963, 0.5775381, 1)
+theme_override_fonts/font = ExtResource("3_n1erg")
+text = "Status : chaos invasion"
+uppercase = true
+
+[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer" unique_id=234560054]
+layout_mode = 2
+theme_override_constants/separation = 0
+
+[node name="Label3" type="Label" parent="VBoxContainer/HBoxContainer" unique_id=1903236650]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.5775381, 1.8247963, 0.5775381, 1)
+theme_override_fonts/font = ExtResource("3_n1erg")
+text = "Imperial Control : "
+uppercase = true
+
+[node name="Label4" type="Label" parent="VBoxContainer/HBoxContainer" unique_id=826844400]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.5775381, 1.8247963, 0.5775381, 1)
+theme_override_fonts/font = ExtResource("3_n1erg")
+text = "70%"
+uppercase = true
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="." unique_id=721368326]
+libraries/ = SubResource("AnimationLibrary_uoll7")
+autoplay = &"a_intro"
