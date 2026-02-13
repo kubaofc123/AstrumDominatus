@@ -1,0 +1,83 @@
+[gd_scene format=3 uid="uid://cysnga8wcpxre"]
+
+[ext_resource type="FontFile" uid="uid://d26tkhlr5xmq" path="res://fonts/courier_prime_sans/Courier Prime Sans.ttf" id="1_i56h5"]
+[ext_resource type="Script" uid="uid://cj6dekjkw08yl" path="res://ui/w_mission_popup.gd" id="1_nvx6d"]
+[ext_resource type="FontFile" uid="uid://s5cki55srkr5" path="res://fonts/courier_prime_sans/Courier Prime Sans Bold.ttf" id="2_nvx6d"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_0cxli"]
+bg_color = Color(0.0911215, 0.09112144, 0.09112144, 1)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.5775381, 1.8247963, 0.5775381, 1)
+corner_radius_top_left = 2
+corner_radius_top_right = 2
+corner_radius_bottom_right = 2
+corner_radius_bottom_left = 2
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_f8jj2"]
+bg_color = Color(0.5775381, 1.8247963, 0.5775381, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_xrqgt"]
+bg_color = Color(0.0911215, 0.09112144, 0.09112144, 1)
+
+[node name="MissionPopup" type="Control" unique_id=1105889443 node_paths=PackedStringArray("_button")]
+custom_minimum_size = Vector2(0, 100)
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_nvx6d")
+_button = NodePath("Button")
+metadata/_edit_group_ = true
+
+[node name="Panel" type="Panel" parent="." unique_id=103625910]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_0cxli")
+
+[node name="Label4" type="Label" parent="." unique_id=2033882883]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 9.0
+offset_top = 9.0
+offset_right = -9.0
+offset_bottom = -9.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_color = Color(0.5775381, 1.8247963, 0.5775381, 1)
+theme_override_fonts/font = ExtResource("1_i56h5")
+text = "Mission success
+Control increase: 0.5%"
+horizontal_alignment = 1
+vertical_alignment = 1
+uppercase = true
+
+[node name="Button" type="Button" parent="." unique_id=1748412329]
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -25.0
+offset_top = 2.0
+offset_right = -2.0
+offset_bottom = 24.0
+grow_horizontal = 0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_colors/font_pressed_color = Color(0.5775381, 1.8247963, 0.5775381, 1)
+theme_override_colors/font_hover_color = Color(0.5775381, 1.8247963, 0.5775381, 1)
+theme_override_fonts/font = ExtResource("2_nvx6d")
+theme_override_font_sizes/font_size = 16
+theme_override_styles/normal = SubResource("StyleBoxFlat_f8jj2")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_xrqgt")
+theme_override_styles/hover = SubResource("StyleBoxFlat_xrqgt")
+text = "X"

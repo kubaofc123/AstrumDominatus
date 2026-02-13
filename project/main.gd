@@ -5,6 +5,10 @@ extends Node
 
 #================ PUBLIC ================
 
+@export_group("Setup/Backend")
+@export var backend_address : String
+@export var backend_key : String
+@export_group("Setup/Nodes")
 @export var state_container : Node = null
 
 var current_state : Main.EState = EState.INIT

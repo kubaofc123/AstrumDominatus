@@ -2,6 +2,7 @@
 
 [ext_resource type="Script" uid="uid://cw1l7518f3r1a" path="res://main.gd" id="1_ig7tw"]
 [ext_resource type="Environment" uid="uid://bls0cff4g64t5" path="res://environments/env_default.tres" id="2_0xm2m"]
+[ext_resource type="FontFile" uid="uid://d26tkhlr5xmq" path="res://fonts/courier_prime_sans/Courier Prime Sans.ttf" id="3_h2yge"]
 
 [node name="Main" type="Node" unique_id=1990423175 node_paths=PackedStringArray("state_container")]
 script = ExtResource("1_ig7tw")
@@ -11,3 +12,33 @@ state_container = NodePath("State")
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=1016410660]
 environment = ExtResource("2_0xm2m")
+
+[node name="Control" type="Control" parent="." unique_id=1865494568]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="Label_Version" type="Label" parent="Control" unique_id=413399733]
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -162.0
+offset_top = -38.0
+offset_right = -10.0
+offset_bottom = -9.0
+grow_horizontal = 0
+grow_vertical = 0
+theme_override_colors/font_color = Color(1, 1, 1, 0.13333334)
+theme_override_fonts/font = ExtResource("3_h2yge")
+theme_override_font_sizes/font_size = 12
+text = "Version
+Indomitus-0.1-4d64f82"
+horizontal_alignment = 2
+uppercase = true

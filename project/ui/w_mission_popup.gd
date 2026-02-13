@@ -1,11 +1,12 @@
-class_name StateLogin
-extends Node
+extends Control
 
 #=============================== VARIABLES ===============================
 
 #================ PUBLIC ================
 
 #================ PRIVATE ================
+
+@export var _button : Button = null
 
 #=============================== FUNCTIONS ===============================
 
@@ -14,12 +15,14 @@ extends Node
 #================ PRIVATE ================
 
 func _ready() -> void:
-	Global.main.load_state(Main.EState.MAIN)
-
+	assert(_button)
+	
+	_button.pressed.connect(_on_button_pressed)
+	
 #=============================== CALLBACKS ===============================
 
 func _on_button_pressed() -> void:
-	#Global.main.load_state(Main.EState.MAIN)
-	pass
-	
+	if not is_queued_for_deletion():
+		queue_free()
+		
 ########################## END OF FILE ##########################

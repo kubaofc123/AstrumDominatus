@@ -6,7 +6,17 @@
 [node name="StateLogin" type="Node" unique_id=568349491]
 script = ExtResource("1_ojvq5")
 
-[node name="ColorBG" type="ColorRect" parent="." unique_id=923192428]
+[node name="UI" type="Control" parent="." unique_id=702722627]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="ColorBG" type="ColorRect" parent="UI" unique_id=923192428]
+layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -14,15 +24,7 @@ grow_horizontal = 2
 grow_vertical = 2
 color = Color(0, 0, 0, 1)
 
-[node name="Control" type="Control" parent="." unique_id=1866889068]
-layout_mode = 3
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-
-[node name="TextureRect_Planet" type="TextureRect" parent="Control" unique_id=1215195436]
+[node name="TextureRect_Planet" type="TextureRect" parent="UI" unique_id=1215195436]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -33,7 +35,9 @@ texture = ExtResource("2_r8awg")
 expand_mode = 1
 stretch_mode = 6
 
-[node name="Panel" type="Panel" parent="." unique_id=1944037059]
+[node name="Panel" type="Panel" parent="UI" unique_id=1944037059]
+visible = false
+layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
 anchor_top = 0.5
@@ -46,7 +50,7 @@ offset_bottom = 265.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="Button" type="Button" parent="Panel" unique_id=603853937]
+[node name="Button" type="Button" parent="UI/Panel" unique_id=603853937]
 layout_mode = 1
 anchors_preset = 14
 anchor_top = 0.5
@@ -58,4 +62,4 @@ grow_horizontal = 2
 grow_vertical = 2
 text = "LOGIN"
 
-[connection signal="pressed" from="Panel/Button" to="." method="_on_button_pressed"]
+[connection signal="pressed" from="UI/Panel/Button" to="." method="_on_button_pressed"]

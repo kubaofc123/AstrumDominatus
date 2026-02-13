@@ -4,12 +4,34 @@
 [ext_resource type="Texture2D" uid="uid://4hegly4se52r" path="res://art/ai/grok/t_bg_1.jpg" id="2_f1klq"]
 [ext_resource type="FontFile" uid="uid://d26tkhlr5xmq" path="res://fonts/courier_prime_sans/Courier Prime Sans.ttf" id="3_n1erg"]
 
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_pgn8p"]
+bg_color = Color(0.14, 0.14, 0.14, 0)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.5775381, 1.8247963, 0.5775381, 1)
+corner_radius_top_left = 2
+corner_radius_top_right = 2
+corner_radius_bottom_right = 2
+corner_radius_bottom_left = 2
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_uoll7"]
+bg_color = Color(1.6110246, 0, 0, 0)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_n1erg"]
+bg_color = Color(0.5775381, 1.8247963, 0.5775381, 1)
+corner_radius_top_left = 1
+corner_radius_top_right = 1
+corner_radius_bottom_right = 1
+corner_radius_bottom_left = 1
+
 [sub_resource type="Animation" id="Animation_uoll7"]
 length = 0.001
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
-tracks/0/path = NodePath("VBoxContainer/Label:visible_characters")
+tracks/0/path = NodePath("UI/HBoxContainer/Control/VBoxContainer/Label:visible_characters")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
@@ -21,7 +43,7 @@ tracks/0/keys = {
 tracks/1/type = "value"
 tracks/1/imported = false
 tracks/1/enabled = true
-tracks/1/path = NodePath("VBoxContainer/Label:visible_ratio")
+tracks/1/path = NodePath("UI/HBoxContainer/Control/VBoxContainer/Label:visible_ratio")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/keys = {
@@ -33,7 +55,7 @@ tracks/1/keys = {
 tracks/2/type = "value"
 tracks/2/imported = false
 tracks/2/enabled = true
-tracks/2/path = NodePath("VBoxContainer/Label2:visible_ratio")
+tracks/2/path = NodePath("UI/HBoxContainer/Control/VBoxContainer/Label2:visible_ratio")
 tracks/2/interp = 1
 tracks/2/loop_wrap = true
 tracks/2/keys = {
@@ -45,7 +67,7 @@ tracks/2/keys = {
 tracks/3/type = "value"
 tracks/3/imported = false
 tracks/3/enabled = true
-tracks/3/path = NodePath("VBoxContainer/HBoxContainer/Label3:visible_ratio")
+tracks/3/path = NodePath("UI/HBoxContainer/Control/VBoxContainer/HBoxContainer/Label3:visible_ratio")
 tracks/3/interp = 1
 tracks/3/loop_wrap = true
 tracks/3/keys = {
@@ -57,7 +79,7 @@ tracks/3/keys = {
 tracks/4/type = "value"
 tracks/4/imported = false
 tracks/4/enabled = true
-tracks/4/path = NodePath("VBoxContainer/HBoxContainer/Label4:visible_ratio")
+tracks/4/path = NodePath("UI/HBoxContainer/Control/VBoxContainer/HBoxContainer/Label4:visible_ratio")
 tracks/4/interp = 1
 tracks/4/loop_wrap = true
 tracks/4/keys = {
@@ -74,7 +96,7 @@ step = 0.5
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
-tracks/0/path = NodePath("VBoxContainer/Label:visible_characters")
+tracks/0/path = NodePath("UI/HBoxContainer/Control/VBoxContainer/Label:visible_characters")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
@@ -86,7 +108,7 @@ tracks/0/keys = {
 tracks/1/type = "value"
 tracks/1/imported = false
 tracks/1/enabled = true
-tracks/1/path = NodePath("VBoxContainer/Label:visible_ratio")
+tracks/1/path = NodePath("UI/HBoxContainer/Control/VBoxContainer/Label:visible_ratio")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/keys = {
@@ -98,7 +120,7 @@ tracks/1/keys = {
 tracks/2/type = "value"
 tracks/2/imported = false
 tracks/2/enabled = true
-tracks/2/path = NodePath("VBoxContainer/Label2:visible_ratio")
+tracks/2/path = NodePath("UI/HBoxContainer/Control/VBoxContainer/Label2:visible_ratio")
 tracks/2/interp = 1
 tracks/2/loop_wrap = true
 tracks/2/keys = {
@@ -110,7 +132,7 @@ tracks/2/keys = {
 tracks/3/type = "value"
 tracks/3/imported = false
 tracks/3/enabled = true
-tracks/3/path = NodePath("VBoxContainer/HBoxContainer/Label3:visible_ratio")
+tracks/3/path = NodePath("UI/HBoxContainer/Control/VBoxContainer/HBoxContainer/Label3:visible_ratio")
 tracks/3/interp = 1
 tracks/3/loop_wrap = true
 tracks/3/keys = {
@@ -122,7 +144,7 @@ tracks/3/keys = {
 tracks/4/type = "value"
 tracks/4/imported = false
 tracks/4/enabled = true
-tracks/4/path = NodePath("VBoxContainer/HBoxContainer/Label4:visible_ratio")
+tracks/4/path = NodePath("UI/HBoxContainer/Control/VBoxContainer/HBoxContainer/Label4:visible_ratio")
 tracks/4/interp = 1
 tracks/4/loop_wrap = true
 tracks/4/keys = {
@@ -138,10 +160,22 @@ _data = {
 &"a_intro": SubResource("Animation_n1erg")
 }
 
-[node name="StateMain" type="Node" unique_id=554935585]
+[node name="StateMain" type="Node" unique_id=554935585 node_paths=PackedStringArray("mission_popup_container")]
 script = ExtResource("1_xn747")
+mission_popup_container = NodePath("UI/HBoxContainer/Control3/ScrollContainer/MissionPopupContainer")
+mission_popup_widget_class_uid = &"uid://cysnga8wcpxre"
 
-[node name="ColorBG" type="ColorRect" parent="." unique_id=765304803]
+[node name="UI" type="Control" parent="." unique_id=990655885]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="ColorBG" type="ColorRect" parent="UI" unique_id=765304803]
+layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -149,15 +183,7 @@ grow_horizontal = 2
 grow_vertical = 2
 color = Color(0, 0, 0, 1)
 
-[node name="Control" type="Control" parent="." unique_id=1910427200]
-layout_mode = 3
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-
-[node name="TextureRect_Planet" type="TextureRect" parent="Control" unique_id=448276384]
+[node name="TextureRect_Planet" type="TextureRect" parent="UI" unique_id=448276384]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -168,46 +194,123 @@ texture = ExtResource("2_f1klq")
 expand_mode = 1
 stretch_mode = 6
 
-[node name="VBoxContainer" type="VBoxContainer" parent="." unique_id=1462160752]
-anchors_preset = 9
+[node name="PlanetaryProgressBar" type="Control" parent="UI" unique_id=994139749]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -131.5
+offset_top = 114.0
+offset_right = 131.5
+offset_bottom = 146.0
+grow_horizontal = 2
+metadata/_edit_group_ = true
+
+[node name="Panel" type="Panel" parent="UI/PlanetaryProgressBar" unique_id=221100560]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = 34.0
-offset_top = 52.0
-offset_right = 373.0
-offset_bottom = -52.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_pgn8p")
+
+[node name="ProgressBar" type="ProgressBar" parent="UI/PlanetaryProgressBar" unique_id=806122571]
+layout_mode = 1
+anchors_preset = -1
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 6.0
+offset_top = 6.0
+offset_right = -6.0
+offset_bottom = -6.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/background = SubResource("StyleBoxFlat_uoll7")
+theme_override_styles/fill = SubResource("StyleBoxFlat_n1erg")
+value = 12.0
+show_percentage = false
+
+[node name="HBoxContainer" type="HBoxContainer" parent="UI" unique_id=828618662]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 50.0
+offset_top = 50.0
+offset_right = 18.0
+offset_bottom = 10.0
+grow_horizontal = 2
 grow_vertical = 2
 
-[node name="Label" type="Label" parent="VBoxContainer" unique_id=1821289480]
+[node name="Control" type="Control" parent="UI/HBoxContainer" unique_id=1405995465]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="VBoxContainer" type="VBoxContainer" parent="UI/HBoxContainer/Control" unique_id=1462160752]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Label" type="Label" parent="UI/HBoxContainer/Control/VBoxContainer" unique_id=1821289480]
 layout_mode = 2
 theme_override_colors/font_color = Color(0.5775381, 1.8247963, 0.5775381, 1)
 theme_override_fonts/font = ExtResource("3_n1erg")
 text = "Planet : Ercaris"
 uppercase = true
 
-[node name="Label2" type="Label" parent="VBoxContainer" unique_id=255467107]
+[node name="Label2" type="Label" parent="UI/HBoxContainer/Control/VBoxContainer" unique_id=255467107]
 layout_mode = 2
 theme_override_colors/font_color = Color(0.5775381, 1.8247963, 0.5775381, 1)
 theme_override_fonts/font = ExtResource("3_n1erg")
 text = "Status : chaos invasion"
 uppercase = true
 
-[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer" unique_id=234560054]
+[node name="HBoxContainer" type="HBoxContainer" parent="UI/HBoxContainer/Control/VBoxContainer" unique_id=234560054]
 layout_mode = 2
 theme_override_constants/separation = 0
 
-[node name="Label3" type="Label" parent="VBoxContainer/HBoxContainer" unique_id=1903236650]
+[node name="Label3" type="Label" parent="UI/HBoxContainer/Control/VBoxContainer/HBoxContainer" unique_id=1903236650]
 layout_mode = 2
 theme_override_colors/font_color = Color(0.5775381, 1.8247963, 0.5775381, 1)
 theme_override_fonts/font = ExtResource("3_n1erg")
 text = "Imperial Control : "
 uppercase = true
 
-[node name="Label4" type="Label" parent="VBoxContainer/HBoxContainer" unique_id=826844400]
+[node name="Label4" type="Label" parent="UI/HBoxContainer/Control/VBoxContainer/HBoxContainer" unique_id=826844400]
 layout_mode = 2
 theme_override_colors/font_color = Color(0.5775381, 1.8247963, 0.5775381, 1)
 theme_override_fonts/font = ExtResource("3_n1erg")
 text = "70%"
 uppercase = true
+
+[node name="Control2" type="Control" parent="UI/HBoxContainer" unique_id=1034915084]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Control3" type="Control" parent="UI/HBoxContainer" unique_id=711941719]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 0.5
+
+[node name="ScrollContainer" type="ScrollContainer" parent="UI/HBoxContainer/Control3" unique_id=1465620271]
+custom_minimum_size = Vector2(300, 0)
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+horizontal_scroll_mode = 0
+
+[node name="MissionPopupContainer" type="VBoxContainer" parent="UI/HBoxContainer/Control3/ScrollContainer" unique_id=725274291]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_constants/separation = 8
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="." unique_id=721368326]
 libraries/ = SubResource("AnimationLibrary_uoll7")
