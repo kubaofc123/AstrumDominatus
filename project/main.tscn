@@ -42,7 +42,7 @@ func _read_commit() -> String:
 [node name="Main" type="Node" unique_id=1990423175 node_paths=PackedStringArray("state_container", "backend_connection")]
 script = ExtResource("1_ig7tw")
 required_mods_list = PackedStringArray("mod_3494196322")
-backend_address = "127.0.0.1"
+backend_address = "astrumdominatus.firewindgames.com"
 state_container = NodePath("State")
 backend_connection = NodePath("BackendConnection")
 
