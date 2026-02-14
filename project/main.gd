@@ -197,7 +197,7 @@ func load_save_file(p_path : String, p_result_dictionary : Dictionary) -> ELoadS
 		_:
 			var __army : String
 			var __operation_days : int = -1
-			var __difficulty : String
+			var __difficulty : int = -1
 			var __victories : int = -1
 			var __defeats : int = -1
 			var __attacking : String
@@ -223,9 +223,18 @@ func load_save_file(p_path : String, p_result_dictionary : Dictionary) -> ELoadS
 						continue
 				
 				# Difficulty
-				if __difficulty.is_empty():
+				if __difficulty == -1:
 					if a.begins_with("{difficulty"):
-						__difficulty = a.get_slice(" ", 1).trim_suffix("}")
+						var __difficulty_string : String = a.get_slice(" ", 1).trim_suffix("}")
+						match __difficulty_string:
+							"easy":
+								__difficulty = 1
+							"normal":
+								__difficulty = 2
+							"hard":
+								__difficulty = 3
+							"heroic":
+								__difficulty = 4
 						continue
 				
 				# Victories
@@ -243,7 +252,7 @@ func load_save_file(p_path : String, p_result_dictionary : Dictionary) -> ELoadS
 							__attacking = "Attacking"
 						continue
 				
-				if not __army.is_empty() and __operation_days != -1 and not __difficulty.is_empty() and __victories != -1 and not __attacking.is_empty():
+				if not __army.is_empty() and __operation_days != -1 and not __difficulty != -1 and __victories != -1 and not __attacking.is_empty():
 					break
 			
 			# Defeats

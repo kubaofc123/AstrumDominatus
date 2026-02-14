@@ -34,7 +34,7 @@ func get_planet_status() -> void:
 	_peer.put_data(__request)
 	
 
-func submit_successful_operation_result() -> void:
+func submit_successful_operation_result(p_difficulty : int) -> void:
 	# OpCode | Version | Difficulty
 	while _peer:
 		await get_tree().create_timer(0.2).timeout
@@ -45,9 +45,9 @@ func submit_successful_operation_result() -> void:
 		await get_tree().create_timer(0.5).timeout
 	var __request : PackedByteArray
 	__request.resize(4)
-	__request.encode_u8(0, 2)			# OpCode
-	__request.encode_u16(1, VERSION)		# Version
-	__request.encode_u8(3, 2)			# Difficulty
+	__request.encode_u8(0, 2)				# OpCode
+	__request.encode_u16(1, VERSION)			# Version
+	__request.encode_u8(3, p_difficulty)		# Difficulty
 	_peer.put_data(__request)
 	
 #================ PRIVATE ================

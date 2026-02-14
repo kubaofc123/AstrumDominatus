@@ -13,6 +13,8 @@ extends Control
 @export var color_failure : Color
 @export var stylebox_normal : StyleBox = null
 @export var stylebox_failure : StyleBox = null
+@export var stylebox_x_button_normal : StyleBox = null
+@export var stylebox_x_button__failure : StyleBox = null
 @export_group("Internal")
 @export var _panel : Panel = null
 @export var _button : Button = null
@@ -26,12 +28,18 @@ func set_victory_text(p_percent : float) -> void:
 	_label.text = "Mission success\nControl increase: {0}%".format([str(p_percent).pad_decimals(4)])
 	_label.add_theme_color_override(&"font_color", color_normal)
 	_panel.add_theme_stylebox_override(&"panel", stylebox_normal)
+	_button.add_theme_stylebox_override(&"normal", stylebox_x_button_normal)
+	_button.add_theme_color_override(&"font_pressed_color", color_normal)
+	_button.add_theme_color_override(&"font_hover_color", color_normal)
 
 
 func set_failure_text() -> void:
 	_label.text = "Mission failed"
 	_label.add_theme_color_override(&"font_color", color_failure)
 	_panel.add_theme_stylebox_override(&"panel", stylebox_failure)
+	_button.add_theme_stylebox_override(&"normal", stylebox_x_button__failure)
+	_button.add_theme_color_override(&"font_pressed_color", color_failure)
+	_button.add_theme_color_override(&"font_hover_color", color_failure)
 	
 #================ PRIVATE ================
 

@@ -31,6 +31,9 @@ corner_radius_bottom_left = 2
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_f8jj2"]
 bg_color = Color(0.5775381, 1.8247963, 0.5775381, 1)
 
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ku2xx"]
+bg_color = Color(1.8247963, 0.5775381, 0.5775381, 1)
+
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_xrqgt"]
 bg_color = Color(0.0911215, 0.09112144, 0.09112144, 1)
 
@@ -47,6 +50,8 @@ color_normal = Color(0.5775381, 1.8247963, 0.5775381, 1)
 color_failure = Color(1.8247963, 0.5775381, 0.5775381, 1)
 stylebox_normal = SubResource("StyleBoxFlat_0cxli")
 stylebox_failure = SubResource("StyleBoxFlat_nvx6d")
+stylebox_x_button_normal = SubResource("StyleBoxFlat_f8jj2")
+stylebox_x_button__failure = SubResource("StyleBoxFlat_ku2xx")
 _panel = NodePath("Panel")
 _button = NodePath("Button")
 _label = NodePath("Label4")
@@ -85,10 +90,10 @@ layout_mode = 1
 anchors_preset = 1
 anchor_left = 1.0
 anchor_right = 1.0
-offset_left = -25.0
-offset_top = 2.0
-offset_right = -2.0
-offset_bottom = 24.0
+offset_left = -24.875
+offset_top = 1.98
+offset_right = -1.875
+offset_bottom = 23.98
 grow_horizontal = 0
 theme_override_colors/font_color = Color(0, 0, 0, 1)
 theme_override_colors/font_pressed_color = Color(0.5775381, 1.8247963, 0.5775381, 1)

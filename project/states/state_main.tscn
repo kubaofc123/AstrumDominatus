@@ -300,7 +300,7 @@ _data = {
 &"a_status": SubResource("Animation_n1erg")
 }
 
-[node name="StateMain" type="Node" unique_id=554935585 node_paths=PackedStringArray("directory_watcher", "mission_popup_container", "anim_player_save", "anim_player_save_info", "anim_player_status", "file_dialog", "save_file_read_timer", "button_load_save_file", "button_update_status", "label_save_file_status_value", "label_save_file_name_value", "label_save_info", "label_faction_control_percent", "progress_bar")]
+[node name="StateMain" type="Node" unique_id=554935585 node_paths=PackedStringArray("directory_watcher", "mission_popup_container", "anim_player_save", "anim_player_save_info", "anim_player_status", "file_dialog", "save_file_read_timer", "button_load_save_file", "button_update_status", "label_save_file_status_value", "label_save_file_name_value", "label_save_info", "label_faction_control_percent", "progress_bar", "status_refresh_timer")]
 script = ExtResource("1_xn747")
 color_standard = Color(0.5775381, 1.8247963, 0.5775381, 1)
 color_bad = Color(1.8247963, 0.5775381, 0.5775381, 1)
@@ -319,6 +319,7 @@ label_save_file_name_value = NodePath("UI/HBoxContainer/Control/VBoxContainer/HB
 label_save_info = NodePath("UI/HBoxContainer/Control/VBoxContainer/Label_SaveInfo")
 label_faction_control_percent = NodePath("UI/HBoxContainer/Control/VBoxContainer2/Label_FactionControlPercent")
 progress_bar = NodePath("UI/PlanetaryProgressBar/ProgressBar")
+status_refresh_timer = NodePath("StatusRefreshTimer")
 
 [node name="UI" type="Control" parent="." unique_id=990655885]
 layout_mode = 3
@@ -635,7 +636,6 @@ libraries/ = SubResource("AnimationLibrary_uoll7")
 
 [node name="AnimationPlayer_Status" type="AnimationPlayer" parent="." unique_id=647901276]
 libraries/ = SubResource("AnimationLibrary_uoll7")
-autoplay = &"a_status"
 
 [node name="FileDialog" type="FileDialog" parent="." unique_id=273474148]
 oversampling_override = 1.0
@@ -655,3 +655,7 @@ metadata/_custom_type_script = "uid://kmhyelk6gnxn"
 [node name="SaveFileReadTimer" type="Timer" parent="." unique_id=1137465776]
 wait_time = 2.0
 one_shot = true
+
+[node name="StatusRefreshTimer" type="Timer" parent="." unique_id=677951349]
+wait_time = 10.0
+autostart = true

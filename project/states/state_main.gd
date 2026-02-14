@@ -27,6 +27,7 @@ extends Node
 @export var label_save_info : Label = null
 @export var label_faction_control_percent : Label = null
 @export var progress_bar : ProgressBar = null
+@export var status_refresh_timer : Timer = null
 
 var _file_status_label_shown : bool = false
 var _valid_save_file_path : String
@@ -53,6 +54,7 @@ func _ready() -> void:
 	assert(label_save_info)
 	assert(label_faction_control_percent)
 	assert(progress_bar)
+	assert(status_refresh_timer)
 	
 	# Signals
 	anim_player_save.animation_finished.connect(_on_anim_player_save_animation_finished)
@@ -62,6 +64,7 @@ func _ready() -> void:
 	directory_watcher.files_modified.connect(_on_directory_watcher_filed_modified)
 	Global.main.backend_connection.signal_planet_status_response.connect(_on_planet_status_response)
 	Global.main.backend_connection.signal_successful_operation_response.connect(_on_successful_operation_response)
+	status_refresh_timer.timeout.connect(_on_status_refresh_timer_timeout)
 	
 	# Directory Watcher setup
 	directory_watcher.scan_delay = directory_scan_time
@@ -69,11 +72,31 @@ func _ready() -> void:
 	# Clear mission popup container
 	for a in mission_popup_container.get_children():
 		a.queue_free()
+	
+	# Fetch latest status
+	Global.main.backend_connection.get_planet_status()
+	await Global.main.backend_connection.signal_planet_status_response
+	anim_player_status.play(&"a_status")
 
 
 func _create_save_info_text(p_dictionary : Dictionary) -> void:
+	# Translate difficulty from int to string
+	var __dict : Dictionary = p_dictionary.duplicate()
+	var __difficulty_string : String = "Unknown"
+	match __dict["difficulty"]:
+		1:
+			__difficulty_string = "Normal"
+		2:
+			__difficulty_string = "Hard"
+		3:
+			__difficulty_string = "Very Hard"
+		4:
+			__difficulty_string = "Extreme"
+	
+	__dict["difficulty"] = __difficulty_string
+			
 	var __string : String = "Army : {army}\nOperation Days : {operation_days}\nDifficulty : {difficulty}\nVictories : {victories}\nDefeats : {defeats}\n{attacking}"
-	label_save_info.text = __string.format(p_dictionary)
+	label_save_info.text = __string.format(__dict)
 	
 #=============================== CALLBACKS ===============================
 
@@ -189,7 +212,7 @@ func _on_save_file_read_timer_timeout(p_file_path : String) -> void:
 	
 	# Send victory notification to backend
 	if __victory_detected:
-		Global.main.backend_connection.submit_successful_operation_result()
+		Global.main.backend_connection.submit_successful_operation_result(__save_file_data_dict["difficulty"])
 
 
 func _on_planet_status_response(p_data : Dictionary) -> void:
@@ -220,5 +243,9 @@ func _on_successful_operation_response(p_data : Dictionary) -> void:
 	var __popup_widget_node : MissionPopupWidget = __popup_widget_class.instantiate()
 	__popup_widget_node.set_victory_text(__progress_percent)
 	mission_popup_container.add_child(__popup_widget_node)
+
+
+func _on_status_refresh_timer_timeout() -> void:
+	Global.main.backend_connection.get_planet_status()
 	
 ########################## END OF FILE ##########################
