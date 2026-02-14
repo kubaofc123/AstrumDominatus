@@ -20,7 +20,7 @@ extends Node
 @export var anim_player_status : AnimationPlayer = null
 @export var file_dialog : FileDialog = null
 @export var save_file_read_timer : Timer = null
-@export var button_load_save_file : Button = null
+@export var button_load_save_file : AstrumButton = null
 @export var label_save_file_status_value : Label = null
 @export var label_save_file_name_value : Label = null
 @export var label_save_info : Label = null
@@ -49,7 +49,7 @@ func _ready() -> void:
 	
 	# Signals
 	anim_player_save.animation_finished.connect(_on_anim_player_save_animation_finished)
-	button_load_save_file.pressed.connect(_on_button_load_save_file_pressed)
+	button_load_save_file.signal_pressed.connect(_on_button_load_save_file_pressed)
 	file_dialog.file_selected.connect(_on_file_dialog_file_selected)
 	directory_watcher.files_modified.connect(_on_directory_watcher_filed_modified)
 	
@@ -107,8 +107,8 @@ func _on_file_dialog_file_selected(p_path : String) -> void:
 	
 	if __result == Main.ESaveFileValidity.VALID:
 		label_save_file_status_value.text = "Approved"
-		label_save_file_status_value.add_theme_color_override("font_color", color_standard)
-		label_save_file_name_value.add_theme_color_override("font_color", color_standard)
+		label_save_file_status_value.add_theme_color_override(&"font_color", color_standard)
+		label_save_file_name_value.add_theme_color_override(&"font_color", color_standard)
 		if not directory_watcher.is_scanning_directory(__new_scan_directory):
 			directory_watcher.add_scan_directory(__new_scan_directory)
 		_valid_save_file_path = p_path
@@ -119,8 +119,8 @@ func _on_file_dialog_file_selected(p_path : String) -> void:
 		anim_player_save_info.play("a_save_info")
 	else:
 		label_save_file_status_value.text = "Rejected"
-		label_save_file_status_value.add_theme_color_override("font_color", color_bad)
-		label_save_file_name_value.add_theme_color_override("font_color", color_bad)
+		label_save_file_status_value.add_theme_color_override(&"font_color", color_bad)
+		label_save_file_name_value.add_theme_color_override(&"font_color", color_bad)
 		_valid_save_file_path = ""
 		label_save_info.visible_ratio = 0.0
 		

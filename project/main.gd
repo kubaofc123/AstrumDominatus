@@ -6,6 +6,7 @@ extends Node
 #================ PUBLIC ================
 
 @export_group("Setup")
+@export var app_type_name : String = "Indomitus"
 @export var required_mods_list : PackedStringArray		## List of mods that need to be in the save file in order to load
 @export var mod_blacklist : PackedStringArray				## List of mods that if they appear in save file, app will not load the save
 @export_group("Setup/Backend")
@@ -18,9 +19,13 @@ var current_state : Main.EState = EState.INIT
 
 enum EState {INIT = 0, LOGIN = 1, MAIN = 2}
 enum ESaveFileValidity {VALID = 0, INVALID = 1, SAVE_LOCKED = 2, MISSING_FILE_IN_SAVE = 3, BLACKLIST_MOD_PRESENT = 4, REQUIRED_MOD_MISSING = 5}
-enum ELoadSaveResult {OK = 0, SAVE_NOT_FOUND = 1, SAVE_LOCKED = 2, MISSING_FILE_IN_SAVE = 3}
+enum ELoadSaveResult {OK = 0, SAVE_NOT_FOUND = 1, SAVE_LOCKED = 2, MISSING_FILE_IN_SAVE = 3, CANT_CREATE_ASTRUM_DOMINATUS_DATA_FILE = 4}
+
+const ASTRUM_DOMINATUS_DATA_FILE_NAME : String = "astrum_dominatus_data"
 
 #================ PRIVATE ================
+
+var _astrum_dominatus_data_dictionary : Dictionary
 
 #=============================== FUNCTIONS ===============================
 
@@ -65,10 +70,13 @@ func is_valid_save_file(p_path : String) -> ESaveFileValidity:
 	var __reader : ZIPReader = ZIPReader.new()
 	var _err : Error = __reader.open(p_path)
 	if _err != Error.OK:
+		__reader.close()
 		return ESaveFileValidity.SAVE_LOCKED
 	
 	# Exit if "status" file doesn't exist
+	push_warning("is_valid_save_file: status file missing, file list: ", __reader.get_files())
 	if not __reader.file_exists("status"):
+		__reader.close()
 		return ESaveFileValidity.MISSING_FILE_IN_SAVE
 	
 	# Read the "status" file as bytes
@@ -148,14 +156,23 @@ func load_save_file(p_path : String, p_result_dictionary : Dictionary) -> ELoadS
 	var __reader : ZIPReader = ZIPReader.new()
 	var _err : Error = __reader.open(p_path)
 	if _err != Error.OK:
+		__reader.close()
 		return ELoadSaveResult.SAVE_LOCKED
 	
 	# Exit if "status" file in save doesn't exist
 	if not __reader.file_exists("status"):
+		__reader.close()
 		return ELoadSaveResult.MISSING_FILE_IN_SAVE
 	
+	# Check if Astrum Dominatus data file if missing
+	var __ad_data_file_missing : bool = false
+	if not __reader.file_exists(ASTRUM_DOMINATUS_DATA_FILE_NAME):
+		__ad_data_file_missing = true
+		
 	# Read the "status" file as bytes
 	var __bytes : PackedByteArray = __reader.read_file("status")
+	
+	# Close reader
 	__reader.close()
 	
 	# Parse bytes into array of strings, where each line is one entry
@@ -237,17 +254,22 @@ func load_save_file(p_path : String, p_result_dictionary : Dictionary) -> ELoadS
 			
 			if __operation_days == -1:
 				push_warning("Failed to read save file, dumping:", __file_string)
+			else:
+				_update_astrum_data_file(p_path, p_result_dictionary)
+				#_astrum_dominatus_data_dictionary = p_result_dictionary
 	
 	return ELoadSaveResult.OK
 
 #================ PRIVATE ================
 
+func _enter_tree() -> void:
+	# Register at Global
+	Global.main = self
+	
+	
 func _ready() -> void:
 	# Startup checks
 	assert(state_container)
-	
-	# Register at Global
-	Global.main = self
 	
 	# Scale the app window to 1/2 screen size
 	_resize_and_reposition_window()
@@ -262,6 +284,45 @@ func _resize_and_reposition_window() -> void:
 	__new_viewport_size.x = __new_viewport_size.y * 1.777777777778
 	get_viewport().get_window().size = __new_viewport_size
 	get_viewport().get_window().position = DisplayServer.screen_get_size(DisplayServer.get_primary_screen())/4.0 + Vector2(DisplayServer.screen_get_position(DisplayServer.get_primary_screen()))
+
+
+func _update_astrum_data_file(p_path : String, p_result_dictionary : Dictionary) -> void:
+	_astrum_dominatus_data_dictionary = p_result_dictionary
+#	var __save_file_files_dict : Dictionary	# FileName - Bytes
+#	
+#	# Store all files in memory
+#	var __reader : ZIPReader = ZIPReader.new()
+#	var _err : Error = __reader.open(p_path)
+#	if _err != Error.OK:
+#		__reader.close()
+#		push_error("_update_astrum_data_file: Can't open save file")
+#		return
+#	var __files_list : PackedStringArray = __reader.get_files()
+#	for __file in __files_list:
+#		# Skip Astrum Dominatus data file
+#		if __file == ASTRUM_DOMINATUS_DATA_FILE_NAME:
+#			continue
+#		__save_file_files_dict[__file] = __reader.read_file(__file)
+#	
+#	# Write back the save files
+#	var __writer : ZIPPacker = ZIPPacker.new()
+#	_err = __writer.open(p_path)
+#	if _err != Error.OK:
+#		__writer.close()
+#		push_error("_update_astrum_data_file: failure")
+#		return
+#	for __file in __files_list:
+#		# Skip Astrum Dominatus data file
+#		if __file == ASTRUM_DOMINATUS_DATA_FILE_NAME:
+#			continue
+#		__writer.start_file(__file)
+#		__writer.write_file(__save_file_files_dict[__file])
+#		__writer.close_file()
+#	__writer.start_file(ASTRUM_DOMINATUS_DATA_FILE_NAME)
+#	var __bytes : PackedByteArray = var_to_bytes(p_result_dictionary)
+#	__writer.write_file(__bytes)
+#	__writer.close_file()
+#	__writer.close()
 	
 #=============================== CALLBACKS ===============================
 

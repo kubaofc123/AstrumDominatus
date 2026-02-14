@@ -3,7 +3,7 @@
 [ext_resource type="Script" uid="uid://b5reclqd0b1rx" path="res://states/state_main.gd" id="1_xn747"]
 [ext_resource type="Texture2D" uid="uid://4hegly4se52r" path="res://art/ai/grok/t_bg_1.jpg" id="2_f1klq"]
 [ext_resource type="FontFile" uid="uid://d26tkhlr5xmq" path="res://fonts/courier_prime_sans/Courier Prime Sans.ttf" id="3_n1erg"]
-[ext_resource type="FontFile" uid="uid://s5cki55srkr5" path="res://fonts/courier_prime_sans/Courier Prime Sans Bold.ttf" id="4_pgn8p"]
+[ext_resource type="PackedScene" uid="uid://h41mkq2khf18" path="res://ui/w_button.tscn" id="4_0cxli"]
 [ext_resource type="PackedScene" uid="uid://cysnga8wcpxre" path="res://ui/w_mission_popup.tscn" id="4_uoll7"]
 [ext_resource type="Script" uid="uid://kmhyelk6gnxn" path="res://third_party/directory_watcher/directory_watcher.gd" id="6_0cxli"]
 
@@ -28,57 +28,6 @@ corner_radius_top_left = 1
 corner_radius_top_right = 1
 corner_radius_bottom_right = 1
 corner_radius_bottom_left = 1
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_0cxli"]
-bg_color = Color(0.5775381, 1.8247963, 0.5775381, 0)
-border_width_left = 2
-border_width_top = 2
-border_width_right = 2
-border_width_bottom = 2
-border_color = Color(0.5775381, 1.8247963, 0.5775381, 1)
-corner_radius_top_left = 2
-corner_radius_top_right = 2
-corner_radius_bottom_right = 2
-corner_radius_bottom_left = 2
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_f8jj2"]
-bg_color = Color(0.5775381, 1.8247963, 0.5775381, 1)
-corner_radius_top_left = 2
-corner_radius_top_right = 2
-corner_radius_bottom_right = 2
-corner_radius_bottom_left = 2
-
-[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_pgn8p"]
-
-[sub_resource type="GDScript" id="GDScript_pgn8p"]
-script/source = "extends Label
-
-
-#=============================== VARIABLES ===============================
-
-#================ PUBLIC ================
-
-#================ PRIVATE ================
-
-@export var _color_normal : Color
-@export var _color_hover : Color
-
-#=============================== FUNCTIONS ===============================
-
-#================ PUBLIC ================
-
-#================ PRIVATE ================
-
-#=============================== CALLBACKS ===============================
-
-func _on_button_load_save_file_mouse_entered() -> void:
-	add_theme_color_override(&\"font_color\", _color_hover)
-	
-func _on_button_load_save_file_mouse_exited() -> void:
-	add_theme_color_override(&\"font_color\", _color_normal)
-	
-########################## END OF FILE ##########################
-"
 
 [sub_resource type="Animation" id="Animation_uoll7"]
 length = 0.001
@@ -509,36 +458,11 @@ uppercase = true
 visible_characters = 0
 visible_ratio = 0.0
 
-[node name="Button_LoadSaveFile" type="Button" parent="UI/HBoxContainer/Control/VBoxContainer" unique_id=781176072]
+[node name="Button_LoadSaveFile" parent="UI/HBoxContainer/Control/VBoxContainer" unique_id=212292305 instance=ExtResource("4_0cxli")]
 custom_minimum_size = Vector2(147.54, 26.72)
 layout_mode = 2
 size_flags_horizontal = 0
-theme_override_colors/font_color = Color(0, 0, 0, 1)
-theme_override_fonts/font = ExtResource("4_pgn8p")
-theme_override_styles/normal = SubResource("StyleBoxFlat_0cxli")
-theme_override_styles/pressed = SubResource("StyleBoxFlat_f8jj2")
-theme_override_styles/hover = SubResource("StyleBoxFlat_f8jj2")
-theme_override_styles/hover_pressed = SubResource("StyleBoxFlat_0cxli")
-theme_override_styles/focus = SubResource("StyleBoxEmpty_pgn8p")
-action_mode = 0
-
-[node name="Label" type="Label" parent="UI/HBoxContainer/Control/VBoxContainer/Button_LoadSaveFile" unique_id=120783504]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-offset_top = 2.04
-offset_bottom = 2.0400028
-grow_horizontal = 2
-grow_vertical = 2
-theme_override_colors/font_color = Color(0.5775381, 1.8247963, 0.5775381, 1)
-theme_override_fonts/font = ExtResource("4_pgn8p")
-text = "LOAD SAVE FILE"
-horizontal_alignment = 1
-vertical_alignment = 1
-uppercase = true
-script = SubResource("GDScript_pgn8p")
-_color_normal = Color(0.5775381, 1.8247963, 0.5775381, 1)
+_text = "LOAD SAVE FILE"
 
 [node name="Label_Empty" type="Label" parent="UI/HBoxContainer/Control/VBoxContainer" unique_id=43360541]
 layout_mode = 2
@@ -664,6 +588,12 @@ uppercase = true
 visible_characters = 0
 visible_ratio = 0.0
 
+[node name="Button_UpdateStatus" parent="UI/HBoxContainer/Control/VBoxContainer2" unique_id=1087888654 instance=ExtResource("4_0cxli")]
+custom_minimum_size = Vector2(147.54, 26.72)
+layout_mode = 2
+size_flags_horizontal = 0
+_text = "Update Status"
+
 [node name="Control2" type="Control" parent="UI/HBoxContainer" unique_id=1034915084]
 layout_mode = 2
 size_flags_horizontal = 3
@@ -723,6 +653,3 @@ metadata/_custom_type_script = "uid://kmhyelk6gnxn"
 [node name="SaveFileReadTimer" type="Timer" parent="." unique_id=1137465776]
 wait_time = 2.0
 one_shot = true
-
-[connection signal="mouse_entered" from="UI/HBoxContainer/Control/VBoxContainer/Button_LoadSaveFile" to="UI/HBoxContainer/Control/VBoxContainer/Button_LoadSaveFile/Label" method="_on_button_load_save_file_mouse_entered"]
-[connection signal="mouse_exited" from="UI/HBoxContainer/Control/VBoxContainer/Button_LoadSaveFile" to="UI/HBoxContainer/Control/VBoxContainer/Button_LoadSaveFile/Label" method="_on_button_load_save_file_mouse_exited"]

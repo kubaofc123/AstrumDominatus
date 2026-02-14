@@ -1,0 +1,51 @@
+[gd_scene format=3 uid="uid://h41mkq2khf18"]
+
+[ext_resource type="Script" uid="uid://dfrprpxf5883h" path="res://ui/w_button.gd" id="1_0mto0"]
+[ext_resource type="FontFile" uid="uid://s5cki55srkr5" path="res://fonts/courier_prime_sans/Courier Prime Sans Bold.ttf" id="1_y3o25"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_0cxli"]
+bg_color = Color(0.5775381, 1.8247963, 0.5775381, 0)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.5775381, 1.8247963, 0.5775381, 1)
+corner_radius_top_left = 2
+corner_radius_top_right = 2
+corner_radius_bottom_right = 2
+corner_radius_bottom_left = 2
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_0mto0"]
+bg_color = Color(0.5775381, 1.8247963, 0.5775381, 1)
+corner_radius_top_left = 2
+corner_radius_top_right = 2
+corner_radius_bottom_right = 2
+corner_radius_bottom_left = 2
+
+[node name="Button" type="Panel" unique_id=212292305 node_paths=PackedStringArray("_label")]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_0cxli")
+script = ExtResource("1_0mto0")
+_style_box_normal = SubResource("StyleBoxFlat_0cxli")
+_style_box_hover = SubResource("StyleBoxFlat_0mto0")
+_label_color_normal = Color(0.5775381, 1.8247963, 0.5775381, 1)
+_label = NodePath("Label")
+
+[node name="Label" type="Label" parent="." unique_id=657551970]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = 2.04
+offset_bottom = 2.0400028
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_color = Color(0.5775381, 1.8247963, 0.5775381, 1)
+theme_override_fonts/font = ExtResource("1_y3o25")
+horizontal_alignment = 1
+vertical_alignment = 1
+uppercase = true

@@ -4,6 +4,40 @@
 [ext_resource type="Environment" uid="uid://bls0cff4g64t5" path="res://environments/env_default.tres" id="2_0xm2m"]
 [ext_resource type="FontFile" uid="uid://d26tkhlr5xmq" path="res://fonts/courier_prime_sans/Courier Prime Sans.ttf" id="3_h2yge"]
 
+[sub_resource type="GDScript" id="GDScript_h2yge"]
+script/source = "extends Label
+
+#=============================== VARIABLES ===============================
+
+#================ PUBLIC ================
+
+#================ PRIVATE ================
+
+#=============================== FUNCTIONS ===============================
+
+#================ PUBLIC ================
+
+#================ PRIVATE ================
+
+func _ready() -> void:
+	var __dict : Dictionary
+	__dict[\"apptype\"] = Global.main.app_type_name
+	__dict[\"version\"] = ProjectSettings.get_setting(\"application/config/version\")
+	__dict[\"commit\"] = _read_commit()
+	text = text.format(__dict)
+
+
+func _read_commit() -> String:
+	var __fa_commit := FileAccess.open(\"res://metadata/build_id.txt\", FileAccess.READ)
+	var __commit : String = __fa_commit.get_line().strip_edges()
+	__fa_commit.close()
+	return __commit
+
+#=============================== CALLBACKS ===============================
+
+########################## END OF FILE ##########################
+"
+
 [node name="Main" type="Node" unique_id=1990423175 node_paths=PackedStringArray("state_container")]
 script = ExtResource("1_ig7tw")
 required_mods_list = PackedStringArray("mod_3494196322")
@@ -40,6 +74,7 @@ theme_override_colors/font_color = Color(1, 1, 1, 0.13333334)
 theme_override_fonts/font = ExtResource("3_h2yge")
 theme_override_font_sizes/font_size = 12
 text = "Version
-Indomitus-0.1-4d64f82"
+{apptype}-{version}-{commit}"
 horizontal_alignment = 2
 uppercase = true
+script = SubResource("GDScript_h2yge")
