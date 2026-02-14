@@ -17,7 +17,8 @@ extends Node
 var current_state : Main.EState = EState.INIT
 
 enum EState {INIT = 0, LOGIN = 1, MAIN = 2}
-enum ESaveFileValidity {VALID = 0, INVALID = 1, FILE_LOCKED = 2, BLACKLIST_MOD_PRESENT = 3, REQUIRED_MOD_MISSING = 4}
+enum ESaveFileValidity {VALID = 0, INVALID = 1, SAVE_LOCKED = 2, MISSING_FILE_IN_SAVE = 3, BLACKLIST_MOD_PRESENT = 4, REQUIRED_MOD_MISSING = 5}
+enum ELoadSaveResult {OK = 0, SAVE_NOT_FOUND = 1, SAVE_LOCKED = 2, MISSING_FILE_IN_SAVE = 3}
 
 #================ PRIVATE ================
 
@@ -50,45 +51,25 @@ func load_state(p_state : Main.EState) -> void:
 		
 		_:
 			pass
-	
-#================ PRIVATE ================
-
-func _ready() -> void:
-	# Startup checks
-	assert(state_container)
-	
-	# Register at Global
-	Global.main = self
-	
-	# Scale the app window to 1/2 screen size
-	_resize_and_reposition_window()
-	
-	# Load init state
-	load_state(Main.EState.INIT)
-	
-	
-func _resize_and_reposition_window() -> void:
-	var __original_viewport_size : Vector2 = Vector2(ProjectSettings.get_setting("display/window/size/viewport_width"), ProjectSettings.get_setting("display/window/size/viewport_height"))
-	var __new_viewport_size = DisplayServer.screen_get_size(DisplayServer.get_primary_screen())/2.0
-	__new_viewport_size.x = __new_viewport_size.y * 1.777777777778
-	get_viewport().get_window().size = __new_viewport_size
-	get_viewport().get_window().position = DisplayServer.screen_get_size(DisplayServer.get_primary_screen())/4.0 + Vector2(DisplayServer.screen_get_position(DisplayServer.get_primary_screen()))
 
 
-func _is_valid_save_file(p_path : String) -> ESaveFileValidity:
+func is_valid_save_file(p_path : String) -> ESaveFileValidity:
 	# Exit if empty path was provided
 	if p_path.is_empty():
 		return ESaveFileValidity.INVALID
 	
-	# Exit of couldn't open the save file
+	if not FileAccess.file_exists(p_path):
+		return ESaveFileValidity.INVALID
+	
+	# Exit if couldn't open the save file
 	var __reader : ZIPReader = ZIPReader.new()
 	var _err : Error = __reader.open(p_path)
 	if _err != Error.OK:
-		return ESaveFileValidity.INVALID
+		return ESaveFileValidity.SAVE_LOCKED
 	
 	# Exit if "status" file doesn't exist
 	if not __reader.file_exists("status"):
-		return ESaveFileValidity.INVALID
+		return ESaveFileValidity.MISSING_FILE_IN_SAVE
 	
 	# Read the "status" file as bytes
 	var __bytes : PackedByteArray = __reader.read_file("status")
@@ -97,6 +78,10 @@ func _is_valid_save_file(p_path : String) -> ESaveFileValidity:
 	# Parse bytes into array of strings, where each line is one entry
 	var __file_string : String = __bytes.get_string_from_utf8()
 	var __string_arr : PackedStringArray = __file_string.split("\n")
+	
+	# Sanitize array
+	for i in __string_arr.size():
+		__string_arr[i] = __string_arr[i].strip_edges()
 	
 	# Find save version
 	var __save_version : int = 0
@@ -107,18 +92,18 @@ func _is_valid_save_file(p_path : String) -> ESaveFileValidity:
 	
 	# Process file
 	match __save_version:
-		9:
+		_:
 			# Find mods line indexes
 			var __mods_line_start_idx : int = 0
 			var __mods_line_end_idx : int = 0
 			for i in __string_arr.size():
 				# Search for mods start
 				if __mods_line_start_idx == 0:
-					if __string_arr[i].strip_edges().begins_with("{mods"):
+					if __string_arr[i].begins_with("{mods"):
 						__mods_line_start_idx = i + 1
 						continue
 				elif __mods_line_end_idx == 0:
-					if __string_arr[i].strip_edges() == "}":
+					if __string_arr[i] == "}":
 						__mods_line_end_idx = i
 						break
 			
@@ -147,17 +132,136 @@ func _is_valid_save_file(p_path : String) -> ESaveFileValidity:
 					break
 			if not __all_required_mods_found:
 				return ESaveFileValidity.REQUIRED_MOD_MISSING
-			
-		_:
-			pass
-	
-	
+
 	return ESaveFileValidity.VALID
 
 
-func _load_save_file(p_path : String) -> Error:
+func load_save_file(p_path : String, p_result_dictionary : Dictionary) -> ELoadSaveResult:
+	# Exit if empty path was provided
+	if p_path.is_empty():
+		return ELoadSaveResult.SAVE_NOT_FOUND
 	
-	return Error.OK
+	if not FileAccess.file_exists(p_path):
+		return ELoadSaveResult.SAVE_NOT_FOUND
+	
+	# Exit of couldn't open the save file
+	var __reader : ZIPReader = ZIPReader.new()
+	var _err : Error = __reader.open(p_path)
+	if _err != Error.OK:
+		return ELoadSaveResult.SAVE_LOCKED
+	
+	# Exit if "status" file in save doesn't exist
+	if not __reader.file_exists("status"):
+		return ELoadSaveResult.MISSING_FILE_IN_SAVE
+	
+	# Read the "status" file as bytes
+	var __bytes : PackedByteArray = __reader.read_file("status")
+	__reader.close()
+	
+	# Parse bytes into array of strings, where each line is one entry
+	var __file_string : String = __bytes.get_string_from_utf8()
+	var __string_arr : PackedStringArray = __file_string.split("\n")
+	
+	# Sanitize array
+	for i in __string_arr.size():
+		__string_arr[i] = __string_arr[i].strip_edges()
+		
+	# Find save version
+	var __save_version : int = 0
+	for a in __string_arr:
+		if a.strip_edges().begins_with("{version"):
+			__save_version = int(a.remove_chars("{}").get_slice(" ",1))
+			break
+	
+	# Process file
+	match __save_version:
+		_:
+			var __army : String
+			var __operation_days : int = -1
+			var __difficulty : String
+			var __victories : int = -1
+			var __defeats : int = -1
+			var __attacking : String
+			
+			for a in __string_arr:
+				# Army
+				if __army.is_empty():
+					if a.begins_with("{army"):
+						__army = a.get_slice(" ", 1).trim_suffix("}")
+						match __army:
+							"ig":
+								__army = "Imperial Guard"
+							_:
+								pass
+						continue
+				
+				# Operation days
+				if __operation_days == -1:
+					if a.begins_with("{playedGames"):
+						__operation_days = int(a.get_slice(" ", 1).trim_suffix("}"))
+						continue
+				
+				# Difficulty
+				if __difficulty.is_empty():
+					if a.begins_with("{difficulty"):
+						__difficulty = a.get_slice(" ", 1).trim_suffix("}")
+						continue
+				
+				# Victories
+				if __victories == -1:
+					if a.begins_with("{wonGames"):
+						__victories = int(a.get_slice(" ", 1).trim_suffix("}"))
+						continue
+				
+				# Attacking
+				if __attacking.is_empty():
+					if a.begins_with("{attacking"):
+						if a.ends_with("0}"):
+							__attacking = "Defending"
+						else:
+							__attacking = "Attacking"
+						continue
+				
+				if not __army.is_empty() and __operation_days != -1 and not __difficulty.is_empty() and __victories != -1 and not __attacking.is_empty():
+					break
+			
+			# Defeats
+			__defeats = __operation_days - __victories
+			
+			p_result_dictionary["army"] = __army
+			p_result_dictionary["operation_days"] = __operation_days
+			p_result_dictionary["difficulty"] = __difficulty
+			p_result_dictionary["victories"] = __victories
+			p_result_dictionary["defeats"] = __defeats
+			p_result_dictionary["attacking"] = __attacking
+			
+			if __operation_days == -1:
+				push_warning("Failed to read save file, dumping:", __file_string)
+	
+	return ELoadSaveResult.OK
+
+#================ PRIVATE ================
+
+func _ready() -> void:
+	# Startup checks
+	assert(state_container)
+	
+	# Register at Global
+	Global.main = self
+	
+	# Scale the app window to 1/2 screen size
+	_resize_and_reposition_window()
+	
+	# Load init state
+	load_state(Main.EState.INIT)
+	
+	
+func _resize_and_reposition_window() -> void:
+	var __original_viewport_size : Vector2 = Vector2(ProjectSettings.get_setting("display/window/size/viewport_width"), ProjectSettings.get_setting("display/window/size/viewport_height"))
+	var __new_viewport_size = DisplayServer.screen_get_size(DisplayServer.get_primary_screen())/2.0
+	__new_viewport_size.x = __new_viewport_size.y * 1.777777777778
+	get_viewport().get_window().size = __new_viewport_size
+	get_viewport().get_window().position = DisplayServer.screen_get_size(DisplayServer.get_primary_screen())/4.0 + Vector2(DisplayServer.screen_get_position(DisplayServer.get_primary_screen()))
 	
 #=============================== CALLBACKS ===============================
 

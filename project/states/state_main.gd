@@ -10,6 +10,7 @@ extends Node
 @export_group("Setup")
 @export var color_standard : Color
 @export var color_bad : Color
+@export var directory_scan_time : float = 1.0
 @export_group("Internal")
 @export var directory_watcher : DirectoryWatcher = null
 @export var mission_popup_container : VBoxContainer = null
@@ -18,6 +19,7 @@ extends Node
 @export var anim_player_save_info : AnimationPlayer = null
 @export var anim_player_status : AnimationPlayer = null
 @export var file_dialog : FileDialog = null
+@export var save_file_read_timer : Timer = null
 @export var button_load_save_file : Button = null
 @export var label_save_file_status_value : Label = null
 @export var label_save_file_name_value : Label = null
@@ -40,6 +42,7 @@ func _ready() -> void:
 	assert(anim_player_save_info)
 	assert(anim_player_status)
 	assert(file_dialog)
+	assert(save_file_read_timer)
 	assert(button_load_save_file)
 	assert(label_save_file_status_value)
 	assert(label_save_file_name_value)
@@ -51,12 +54,17 @@ func _ready() -> void:
 	directory_watcher.files_modified.connect(_on_directory_watcher_filed_modified)
 	
 	# Directory Watcher setup
-	directory_watcher.scan_delay = 2.0
+	directory_watcher.scan_delay = directory_scan_time
 	
 	# Clear mission popup container
 	for a in mission_popup_container.get_children():
 		a.queue_free()
-		
+
+
+func _create_save_info(p_dictionary : Dictionary) -> void:
+	var __string : String = "Army : {army}\nOperation Days : {operation_days}\nDifficulty : {difficulty}\nVictories : {victories}\nDefeats : {defeats}\n{attacking}"
+	label_save_info.text = __string.format(p_dictionary)
+	
 #=============================== CALLBACKS ===============================
 
 func _on_anim_player_save_animation_finished(p_anim_name : StringName) -> void:
@@ -74,7 +82,12 @@ func _on_button_load_save_file_pressed() -> void:
 
 
 func _on_file_dialog_file_selected(p_path : String) -> void:
-	var __result : Main.ESaveFileValidity = Global.main._is_valid_save_file(p_path)
+	var __result : Main.ESaveFileValidity = Global.main.is_valid_save_file(p_path)
+	var __loop_count : int = 0
+	while __result == Main.ESaveFileValidity.SAVE_LOCKED and __loop_count < 10:
+		__loop_count += 1
+		await get_tree().create_timer(1.0).timeout
+		__result = Global.main.is_valid_save_file(p_path)
 	
 	if anim_player_save.is_playing() and anim_player_save.current_animation == "a_save_file_status":
 		await anim_player_save.animation_finished
@@ -99,6 +112,10 @@ func _on_file_dialog_file_selected(p_path : String) -> void:
 		if not directory_watcher.is_scanning_directory(__new_scan_directory):
 			directory_watcher.add_scan_directory(__new_scan_directory)
 		_valid_save_file_path = p_path
+		
+		var __save_file_data_dict : Dictionary
+		Global.main.load_save_file(p_path, __save_file_data_dict)
+		_create_save_info(__save_file_data_dict)
 		anim_player_save_info.play("a_save_info")
 	else:
 		label_save_file_status_value.text = "Rejected"
@@ -116,10 +133,20 @@ func _on_directory_watcher_filed_modified(p_files : PackedStringArray) -> void:
 	if __idx == -1:
 		return
 	
+	save_file_read_timer.timeout.connect(_on_save_file_read_timer_timeout.bind(p_files[__idx]), ConnectFlags.CONNECT_ONE_SHOT)
+	save_file_read_timer.start(directory_scan_time + 1.0)
+	
+	
+func _on_save_file_read_timer_timeout(p_file_path : String) -> void:
 	print("Loaded save was modified")
 	var __popup_widget_class : PackedScene = EngineScriptLibrary.utility.load_asset(mission_popup_widget_class_uid)
 	assert(__popup_widget_class)
 	var __popup_widget_node : Control = __popup_widget_class.instantiate()
 	mission_popup_container.add_child(__popup_widget_node)
+	
+	var __save_file_data_dict : Dictionary
+	Global.main.load_save_file(p_file_path, __save_file_data_dict)
+	_create_save_info(__save_file_data_dict)
+	anim_player_save_info.play("a_save_info")
 	
 ########################## END OF FILE ##########################

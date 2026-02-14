@@ -351,7 +351,7 @@ _data = {
 &"a_status": SubResource("Animation_n1erg")
 }
 
-[node name="StateMain" type="Node" unique_id=554935585 node_paths=PackedStringArray("directory_watcher", "mission_popup_container", "anim_player_save", "anim_player_save_info", "anim_player_status", "file_dialog", "button_load_save_file", "label_save_file_status_value", "label_save_file_name_value", "label_save_info")]
+[node name="StateMain" type="Node" unique_id=554935585 node_paths=PackedStringArray("directory_watcher", "mission_popup_container", "anim_player_save", "anim_player_save_info", "anim_player_status", "file_dialog", "save_file_read_timer", "button_load_save_file", "label_save_file_status_value", "label_save_file_name_value", "label_save_info")]
 script = ExtResource("1_xn747")
 color_standard = Color(0.5775381, 1.8247963, 0.5775381, 1)
 color_bad = Color(1.8247963, 0.5775381, 0.5775381, 1)
@@ -362,6 +362,7 @@ anim_player_save = NodePath("AnimationPlayer_Save")
 anim_player_save_info = NodePath("AnimationPlayer_SaveInfo")
 anim_player_status = NodePath("AnimationPlayer_Status")
 file_dialog = NodePath("FileDialog")
+save_file_read_timer = NodePath("SaveFileReadTimer")
 button_load_save_file = NodePath("UI/HBoxContainer/Control/VBoxContainer/Button_LoadSaveFile")
 label_save_file_status_value = NodePath("UI/HBoxContainer/Control/VBoxContainer/HBoxContainer2/Label_SaveFileStatusValue")
 label_save_file_name_value = NodePath("UI/HBoxContainer/Control/VBoxContainer/HBoxContainer3/Label_SaveFileNameValue")
@@ -576,6 +577,7 @@ visible_characters = 0
 visible_ratio = 0.0
 
 [node name="Label_SaveInfo" type="Label" parent="UI/HBoxContainer/Control/VBoxContainer" unique_id=399265442]
+custom_minimum_size = Vector2(1, 0)
 layout_mode = 2
 theme_override_colors/font_color = Color(0.5775381, 1.8247963, 0.5775381, 1)
 theme_override_fonts/font = ExtResource("3_n1erg")
@@ -585,6 +587,7 @@ Difficulty: Easy
 Victories: 2
 Defeats: 2
 Attacking"
+autowrap_mode = 3
 uppercase = true
 visible_characters = 0
 visible_ratio = 0.0
@@ -716,6 +719,10 @@ folder_creation_enabled = false
 [node name="DirectoryWatcher" type="Node" parent="." unique_id=1976116838]
 script = ExtResource("6_0cxli")
 metadata/_custom_type_script = "uid://kmhyelk6gnxn"
+
+[node name="SaveFileReadTimer" type="Timer" parent="." unique_id=1137465776]
+wait_time = 2.0
+one_shot = true
 
 [connection signal="mouse_entered" from="UI/HBoxContainer/Control/VBoxContainer/Button_LoadSaveFile" to="UI/HBoxContainer/Control/VBoxContainer/Button_LoadSaveFile/Label" method="_on_button_load_save_file_mouse_entered"]
 [connection signal="mouse_exited" from="UI/HBoxContainer/Control/VBoxContainer/Button_LoadSaveFile" to="UI/HBoxContainer/Control/VBoxContainer/Button_LoadSaveFile/Label" method="_on_button_load_save_file_mouse_exited"]
