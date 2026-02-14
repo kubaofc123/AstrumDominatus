@@ -21,9 +21,12 @@ extends Node
 @export var file_dialog : FileDialog = null
 @export var save_file_read_timer : Timer = null
 @export var button_load_save_file : AstrumButton = null
+@export var button_update_status : AstrumButton = null
 @export var label_save_file_status_value : Label = null
 @export var label_save_file_name_value : Label = null
 @export var label_save_info : Label = null
+@export var label_faction_control_percent : Label = null
+@export var progress_bar : ProgressBar = null
 
 var _file_status_label_shown : bool = false
 var _valid_save_file_path : String
@@ -44,14 +47,21 @@ func _ready() -> void:
 	assert(file_dialog)
 	assert(save_file_read_timer)
 	assert(button_load_save_file)
+	assert(button_update_status)
 	assert(label_save_file_status_value)
 	assert(label_save_file_name_value)
+	assert(label_save_info)
+	assert(label_faction_control_percent)
+	assert(progress_bar)
 	
 	# Signals
 	anim_player_save.animation_finished.connect(_on_anim_player_save_animation_finished)
 	button_load_save_file.signal_pressed.connect(_on_button_load_save_file_pressed)
+	button_update_status.signal_pressed.connect(_on_button_update_status_pressed)
 	file_dialog.file_selected.connect(_on_file_dialog_file_selected)
 	directory_watcher.files_modified.connect(_on_directory_watcher_filed_modified)
+	Global.main.backend_connection.signal_planet_status_response.connect(_on_planet_status_response)
+	Global.main.backend_connection.signal_successful_operation_response.connect(_on_successful_operation_response)
 	
 	# Directory Watcher setup
 	directory_watcher.scan_delay = directory_scan_time
@@ -61,7 +71,7 @@ func _ready() -> void:
 		a.queue_free()
 
 
-func _create_save_info(p_dictionary : Dictionary) -> void:
+func _create_save_info_text(p_dictionary : Dictionary) -> void:
 	var __string : String = "Army : {army}\nOperation Days : {operation_days}\nDifficulty : {difficulty}\nVictories : {victories}\nDefeats : {defeats}\n{attacking}"
 	label_save_info.text = __string.format(p_dictionary)
 	
@@ -81,6 +91,10 @@ func _on_button_load_save_file_pressed() -> void:
 	file_dialog.visible = true
 
 
+func _on_button_update_status_pressed() -> void:
+	Global.main.backend_connection.get_planet_status()
+	
+	
 func _on_file_dialog_file_selected(p_path : String) -> void:
 	var __result : Main.ESaveFileValidity = Global.main.is_valid_save_file(p_path)
 	var __loop_count : int = 0
@@ -115,7 +129,8 @@ func _on_file_dialog_file_selected(p_path : String) -> void:
 		
 		var __save_file_data_dict : Dictionary
 		Global.main.load_save_file(p_path, __save_file_data_dict)
-		_create_save_info(__save_file_data_dict)
+		Global.main.update_astrum_data_file(p_path, __save_file_data_dict)
+		_create_save_info_text(__save_file_data_dict)
 		anim_player_save_info.play("a_save_info")
 	else:
 		label_save_file_status_value.text = "Rejected"
@@ -123,6 +138,7 @@ func _on_file_dialog_file_selected(p_path : String) -> void:
 		label_save_file_name_value.add_theme_color_override(&"font_color", color_bad)
 		_valid_save_file_path = ""
 		label_save_info.visible_ratio = 0.0
+		Global.main.loaded_astrum_dominatus_data_dictionary.clear()
 		
 		
 func _on_directory_watcher_filed_modified(p_files : PackedStringArray) -> void:
@@ -133,20 +149,76 @@ func _on_directory_watcher_filed_modified(p_files : PackedStringArray) -> void:
 	if __idx == -1:
 		return
 	
-	save_file_read_timer.timeout.connect(_on_save_file_read_timer_timeout.bind(p_files[__idx]), ConnectFlags.CONNECT_ONE_SHOT)
+	if not save_file_read_timer.timeout.is_connected(_on_save_file_read_timer_timeout.bind(p_files[__idx])):
+		save_file_read_timer.timeout.connect(_on_save_file_read_timer_timeout.bind(p_files[__idx]), ConnectFlags.CONNECT_ONE_SHOT)
 	save_file_read_timer.start(directory_scan_time + 1.0)
 	
-	
+
 func _on_save_file_read_timer_timeout(p_file_path : String) -> void:
 	print("Loaded save was modified")
-	var __popup_widget_class : PackedScene = EngineScriptLibrary.utility.load_asset(mission_popup_widget_class_uid)
-	assert(__popup_widget_class)
-	var __popup_widget_node : Control = __popup_widget_class.instantiate()
-	mission_popup_container.add_child(__popup_widget_node)
 	
 	var __save_file_data_dict : Dictionary
 	Global.main.load_save_file(p_file_path, __save_file_data_dict)
-	_create_save_info(__save_file_data_dict)
+	
+	# If save got modified but all data is the same, don't refresh UI
+	if __save_file_data_dict == Global.main.loaded_astrum_dominatus_data_dictionary:
+		return
+	
+	# Detect if there was a new victory
+	var __victory_detected : bool = false
+	var __failure_detected : bool = false
+	if __save_file_data_dict["operation_days"] > Global.main.loaded_astrum_dominatus_data_dictionary["operation_days"]:
+		if __save_file_data_dict["victories"] > Global.main.loaded_astrum_dominatus_data_dictionary["victories"]:
+			__victory_detected = true
+		else:
+			__failure_detected = true
+	
+	# Update UI
+	_create_save_info_text(__save_file_data_dict)
 	anim_player_save_info.play("a_save_info")
+	
+	# Update loaded data
+	Global.main.update_astrum_data_file(p_file_path, __save_file_data_dict)
+	
+	if __failure_detected:
+		var __popup_widget_class : PackedScene = EngineScriptLibrary.utility.load_asset(mission_popup_widget_class_uid)
+		assert(__popup_widget_class)
+		var __popup_widget_node : MissionPopupWidget = __popup_widget_class.instantiate()
+		__popup_widget_node.set_failure_text()
+		mission_popup_container.add_child(__popup_widget_node)
+	
+	# Send victory notification to backend
+	if __victory_detected:
+		Global.main.backend_connection.submit_successful_operation_result()
+
+
+func _on_planet_status_response(p_data : Dictionary) -> void:
+	if not p_data.has("planet_data"):
+		return
+	
+	progress_bar.max_value = float(p_data["planet_data"]["max_value"])
+	progress_bar.value = float(p_data["planet_data"]["value"])
+	
+	var __planet_control_percent_string : String = str((float(p_data["planet_data"]["value"]) / float(p_data["planet_data"]["max_value"])) * 100.0).pad_decimals(2)
+	label_faction_control_percent.text = "Imperial Control at {0}%".format([__planet_control_percent_string])
+
+
+func _on_successful_operation_response(p_data : Dictionary) -> void:
+	if not p_data.has("planet_data"):
+		return
+		
+	progress_bar.max_value = float(p_data["planet_data"]["max_value"])
+	progress_bar.value = float(p_data["planet_data"]["value"])
+	
+	var __planet_control_percent_string : String = str((float(p_data["planet_data"]["value"]) / float(p_data["planet_data"]["max_value"])) * 100.0).pad_decimals(2)
+	label_faction_control_percent.text = "Imperial Control at {0}%".format([__planet_control_percent_string])
+		
+	# Show popup
+	var __progress_percent : float = (float(p_data["contribution_points"]) / float(p_data["planet_data"]["max_value"])) * 100.0
+	var __popup_widget_class : PackedScene = EngineScriptLibrary.utility.load_asset(mission_popup_widget_class_uid)
+	assert(__popup_widget_class)
+	var __popup_widget_node : MissionPopupWidget = __popup_widget_class.instantiate()
+	__popup_widget_node.set_victory_text(__progress_percent)
+	mission_popup_container.add_child(__popup_widget_node)
 	
 ########################## END OF FILE ##########################

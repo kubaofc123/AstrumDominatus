@@ -23,6 +23,7 @@ boot_splash/bg_color=Color(0, 0, 0, 1)
 boot_splash/show_image=false
 config/icon="uid://deqliqacgaa5g"
 config/windows_native_icon="res://t_icon.ico"
+config/disable_project_settings_override.editor=false
 
 [autoload]
 
@@ -49,6 +50,10 @@ folder_colors={
 "res://editor/": "red",
 "res://ui/": "green"
 }
+
+[network]
+
+limits/tcp/connect_timeout_seconds=10
 
 [rendering]
 

@@ -3,6 +3,7 @@
 [ext_resource type="Script" uid="uid://cw1l7518f3r1a" path="res://main.gd" id="1_ig7tw"]
 [ext_resource type="Environment" uid="uid://bls0cff4g64t5" path="res://environments/env_default.tres" id="2_0xm2m"]
 [ext_resource type="FontFile" uid="uid://d26tkhlr5xmq" path="res://fonts/courier_prime_sans/Courier Prime Sans.ttf" id="3_h2yge"]
+[ext_resource type="Script" uid="uid://dd4axxglixtuv" path="res://scripts/backend_connection.gd" id="4_1bvp3"]
 
 [sub_resource type="GDScript" id="GDScript_h2yge"]
 script/source = "extends Label
@@ -38,12 +39,18 @@ func _read_commit() -> String:
 ########################## END OF FILE ##########################
 "
 
-[node name="Main" type="Node" unique_id=1990423175 node_paths=PackedStringArray("state_container")]
+[node name="Main" type="Node" unique_id=1990423175 node_paths=PackedStringArray("state_container", "backend_connection")]
 script = ExtResource("1_ig7tw")
 required_mods_list = PackedStringArray("mod_3494196322")
+backend_address = "127.0.0.1"
 state_container = NodePath("State")
+backend_connection = NodePath("BackendConnection")
 
 [node name="State" type="Node" parent="." unique_id=713003963]
+
+[node name="BackendConnection" type="Node" parent="." unique_id=396556506]
+script = ExtResource("4_1bvp3")
+metadata/_custom_type_script = "uid://dd4axxglixtuv"
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=1016410660]
 environment = ExtResource("2_0xm2m")
