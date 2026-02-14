@@ -5,6 +5,7 @@
 [ext_resource type="FontFile" uid="uid://d26tkhlr5xmq" path="res://fonts/courier_prime_sans/Courier Prime Sans.ttf" id="3_n1erg"]
 [ext_resource type="FontFile" uid="uid://s5cki55srkr5" path="res://fonts/courier_prime_sans/Courier Prime Sans Bold.ttf" id="4_pgn8p"]
 [ext_resource type="PackedScene" uid="uid://cysnga8wcpxre" path="res://ui/w_mission_popup.tscn" id="4_uoll7"]
+[ext_resource type="Script" uid="uid://kmhyelk6gnxn" path="res://third_party/directory_watcher/directory_watcher.gd" id="6_0cxli"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_pgn8p"]
 bg_color = Color(0.14, 0.14, 0.14, 0)
@@ -189,6 +190,18 @@ tracks/8/keys = {
 "update": 0,
 "values": [0.0]
 }
+tracks/9/type = "value"
+tracks/9/imported = false
+tracks/9/enabled = true
+tracks/9/path = NodePath("UI/HBoxContainer/Control/VBoxContainer/Label_SaveInfo:visible_ratio")
+tracks/9/interp = 1
+tracks/9/loop_wrap = true
+tracks/9/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [0.0]
+}
 
 [sub_resource type="Animation" id="Animation_pgn8p"]
 resource_name = "a_save_file"
@@ -242,6 +255,23 @@ tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/keys = {
 "times": PackedFloat32Array(0, 0.25),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [0.0, 1.0]
+}
+
+[sub_resource type="Animation" id="Animation_f8jj2"]
+resource_name = "a_save_info"
+length = 1.25
+step = 0.25
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("UI/HBoxContainer/Control/VBoxContainer/Label_SaveInfo:visible_ratio")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.75),
 "transitions": PackedFloat32Array(1, 1),
 "update": 0,
 "values": [0.0, 1.0]
@@ -317,21 +347,25 @@ _data = {
 &"RESET": SubResource("Animation_uoll7"),
 &"a_save_file_status": SubResource("Animation_pgn8p"),
 &"a_save_file_status_value": SubResource("Animation_0cxli"),
+&"a_save_info": SubResource("Animation_f8jj2"),
 &"a_status": SubResource("Animation_n1erg")
 }
 
-[node name="StateMain" type="Node" unique_id=554935585 node_paths=PackedStringArray("mission_popup_container", "anim_player_save", "anim_player_status", "file_dialog", "button_load_save_file", "label_save_file_status_value", "label_save_file_name_value")]
+[node name="StateMain" type="Node" unique_id=554935585 node_paths=PackedStringArray("directory_watcher", "mission_popup_container", "anim_player_save", "anim_player_save_info", "anim_player_status", "file_dialog", "button_load_save_file", "label_save_file_status_value", "label_save_file_name_value", "label_save_info")]
 script = ExtResource("1_xn747")
 color_standard = Color(0.5775381, 1.8247963, 0.5775381, 1)
 color_bad = Color(1.8247963, 0.5775381, 0.5775381, 1)
+directory_watcher = NodePath("DirectoryWatcher")
 mission_popup_container = NodePath("UI/HBoxContainer/Control3/ScrollContainer/MissionPopupContainer")
 mission_popup_widget_class_uid = &"uid://cysnga8wcpxre"
 anim_player_save = NodePath("AnimationPlayer_Save")
+anim_player_save_info = NodePath("AnimationPlayer_SaveInfo")
 anim_player_status = NodePath("AnimationPlayer_Status")
 file_dialog = NodePath("FileDialog")
 button_load_save_file = NodePath("UI/HBoxContainer/Control/VBoxContainer/Button_LoadSaveFile")
 label_save_file_status_value = NodePath("UI/HBoxContainer/Control/VBoxContainer/HBoxContainer2/Label_SaveFileStatusValue")
 label_save_file_name_value = NodePath("UI/HBoxContainer/Control/VBoxContainer/HBoxContainer3/Label_SaveFileNameValue")
+label_save_info = NodePath("UI/HBoxContainer/Control/VBoxContainer/Label_SaveInfo")
 
 [node name="UI" type="Control" parent="." unique_id=990655885]
 layout_mode = 3
@@ -483,6 +517,7 @@ theme_override_fonts/font = ExtResource("4_pgn8p")
 theme_override_styles/normal = SubResource("StyleBoxFlat_0cxli")
 theme_override_styles/pressed = SubResource("StyleBoxFlat_f8jj2")
 theme_override_styles/hover = SubResource("StyleBoxFlat_f8jj2")
+theme_override_styles/hover_pressed = SubResource("StyleBoxFlat_0cxli")
 theme_override_styles/focus = SubResource("StyleBoxEmpty_pgn8p")
 action_mode = 0
 
@@ -503,6 +538,56 @@ vertical_alignment = 1
 uppercase = true
 script = SubResource("GDScript_pgn8p")
 _color_normal = Color(0.5775381, 1.8247963, 0.5775381, 1)
+
+[node name="Label_Empty" type="Label" parent="UI/HBoxContainer/Control/VBoxContainer" unique_id=43360541]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.5775381, 1.8247963, 0.5775381, 1)
+theme_override_fonts/font = ExtResource("3_n1erg")
+text = "Save file status: "
+uppercase = true
+visible_characters = 0
+visible_ratio = 0.0
+
+[node name="Label_Empty2" type="Label" parent="UI/HBoxContainer/Control/VBoxContainer" unique_id=933098175]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.5775381, 1.8247963, 0.5775381, 1)
+theme_override_fonts/font = ExtResource("3_n1erg")
+text = "Save file status: "
+uppercase = true
+visible_characters = 0
+visible_ratio = 0.0
+
+[node name="Label_Empty3" type="Label" parent="UI/HBoxContainer/Control/VBoxContainer" unique_id=1027138897]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.5775381, 1.8247963, 0.5775381, 1)
+theme_override_fonts/font = ExtResource("3_n1erg")
+text = "Save file status: "
+uppercase = true
+visible_characters = 0
+visible_ratio = 0.0
+
+[node name="Label_Empty4" type="Label" parent="UI/HBoxContainer/Control/VBoxContainer" unique_id=2075278462]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.5775381, 1.8247963, 0.5775381, 1)
+theme_override_fonts/font = ExtResource("3_n1erg")
+text = "Save file status: "
+uppercase = true
+visible_characters = 0
+visible_ratio = 0.0
+
+[node name="Label_SaveInfo" type="Label" parent="UI/HBoxContainer/Control/VBoxContainer" unique_id=399265442]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.5775381, 1.8247963, 0.5775381, 1)
+theme_override_fonts/font = ExtResource("3_n1erg")
+text = "Army: Imperial Guard
+Operation Days: 12
+Difficulty: Easy
+Victories: 2
+Defeats: 2
+Attacking"
+uppercase = true
+visible_characters = 0
+visible_ratio = 0.0
 
 [node name="VBoxContainer2" type="VBoxContainer" parent="UI/HBoxContainer/Control" unique_id=1194685828]
 layout_mode = 1
@@ -610,6 +695,9 @@ layout_mode = 2
 libraries/ = SubResource("AnimationLibrary_uoll7")
 autoplay = &"a_save_file_status"
 
+[node name="AnimationPlayer_SaveInfo" type="AnimationPlayer" parent="." unique_id=274327588]
+libraries/ = SubResource("AnimationLibrary_uoll7")
+
 [node name="AnimationPlayer_Status" type="AnimationPlayer" parent="." unique_id=647901276]
 libraries/ = SubResource("AnimationLibrary_uoll7")
 autoplay = &"a_status"
@@ -624,6 +712,10 @@ access = 2
 filters = PackedStringArray("*.sav")
 use_native_dialog = true
 folder_creation_enabled = false
+
+[node name="DirectoryWatcher" type="Node" parent="." unique_id=1976116838]
+script = ExtResource("6_0cxli")
+metadata/_custom_type_script = "uid://kmhyelk6gnxn"
 
 [connection signal="mouse_entered" from="UI/HBoxContainer/Control/VBoxContainer/Button_LoadSaveFile" to="UI/HBoxContainer/Control/VBoxContainer/Button_LoadSaveFile/Label" method="_on_button_load_save_file_mouse_entered"]
 [connection signal="mouse_exited" from="UI/HBoxContainer/Control/VBoxContainer/Button_LoadSaveFile" to="UI/HBoxContainer/Control/VBoxContainer/Button_LoadSaveFile/Label" method="_on_button_load_save_file_mouse_exited"]

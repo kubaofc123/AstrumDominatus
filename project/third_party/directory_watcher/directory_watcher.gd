@@ -22,9 +22,9 @@ var _remaining_steps: int
 var _current_delay: float
 
 ## Delay between directory scans (in seconds).
-var scan_delay: float = 1
+var scan_delay: float = 1.0
 ## Files scanned per frame.
-var scan_step := 50
+var scan_step : int = 50
 
 ## Emitted when files are created in the scanned directories.
 signal files_created(files: PackedStringArray)
@@ -39,19 +39,24 @@ func _ready() -> void:
 	_directory.include_hidden = true
 
 ## Adds a directory that will be scanned. You can add more than 1. Only supports absolute paths and res://, user://.
-func add_scan_directory(directory: String):
+func add_scan_directory(directory: String) -> void:
+	print("Added scan directory: ", directory)
 	directory = ProjectSettings.globalize_path(directory)
 	_directory_list[directory] = WatchedDirectory.new()
 	_directory_cache = _directory_list.keys()
 
 ## Removes a scanned directory. Does nothing if the directory wasn't added.
-func remove_scan_directory(directory: String):
+func remove_scan_directory(directory: String) -> void:
+	print("Removed scan directory: ", directory)
 	directory = ProjectSettings.globalize_path(directory)
 	_to_delete.append(directory)
 
+func is_scanning_directory(directory: String) -> bool:
+	return _directory_list.has(directory)
+
 func _process(delta: float) -> void:
 	if _directory_list.is_empty():
-		push_error("No directory to watch. Please kill me ;_;")
+		#push_error("No directory to watch. Please kill me ;_;")
 		return
 	
 	if _current_delay > 0:
@@ -100,6 +105,7 @@ func _process(delta: float) -> void:
 				if not _to_delete.is_empty():
 					for dir in _to_delete:
 						_directory_list.erase(dir)
+						_directory_cache.erase(dir)
 					_to_delete.clear()
 				
 				_current_directory_index = 0

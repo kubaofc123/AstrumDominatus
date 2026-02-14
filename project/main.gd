@@ -153,6 +153,11 @@ func _is_valid_save_file(p_path : String) -> ESaveFileValidity:
 	
 	
 	return ESaveFileValidity.VALID
+
+
+func _load_save_file(p_path : String) -> Error:
+	
+	return Error.OK
 	
 #=============================== CALLBACKS ===============================
 
